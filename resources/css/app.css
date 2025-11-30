@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,8 +9,59 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Font Family */
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 
+    /* ============================================ */
+    /* PRIMARY COLORS - Hijau Stabilo (Green)      */
+    /* ============================================ */
+    --color-primary-50: #f0fdf4;
+    --color-primary-100: #dcfce7;
+    --color-primary-200: #bbf7d0;
+    --color-primary-300: #86efac;
+    --color-primary-400: #4ade80;
+    --color-primary-500: #22c55e; /* Main Primary - Hijau Stabilo */
+    --color-primary-600: #16a34a;
+    --color-primary-700: #15803d;
+    --color-primary-800: #166534;
+    --color-primary-900: #14532d;
+    --color-primary-950: #052e16;
+
+    /* ============================================ */
+    /* SECONDARY COLORS - Biru Navy (Navy Blue)    */
+    /* ============================================ */
+    --color-secondary-50: #eff6ff;
+    --color-secondary-100: #dbeafe;
+    --color-secondary-200: #bfdbfe;
+    --color-secondary-300: #93c5fd;
+    --color-secondary-400: #60a5fa;
+    --color-secondary-500: #3b82f6;
+    --color-secondary-600: #2563eb;
+    --color-secondary-700: #1e40af;
+    --color-secondary-800: #1e3a8a; /* Main Secondary - Biru Navy */
+    --color-secondary-900: #1e293b;
+    --color-secondary-950: #0f172a;
+
+    /* ============================================ */
+    /* NEUTRAL COLORS - Gray Scale                 */
+    /* ============================================ */
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    --color-neutral-950: #0a0a0a;
+
+    /* ============================================ */
+    /* ZINC COLORS - Kept for Flux compatibility  */
+    /* ============================================ */
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
     --color-zinc-200: #e5e5e5;
@@ -23,21 +74,58 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    /* ============================================ */
+    /* SEMANTIC COLORS - Success, Warning, Error   */
+    /* ============================================ */
+    /* Success - Green shades */
+    --color-success-50: #f0fdf4;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+
+    /* Warning - Yellow/Amber shades */
+    --color-warning-50: #fffbeb;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+
+    /* Error/Danger - Red shades */
+    --color-danger-50: #fef2f2;
+    --color-danger-500: #ef4444;
+    --color-danger-600: #dc2626;
+    --color-danger-700: #b91c1c;
+
+    /* Info - Blue shades */
+    --color-info-50: #eff6ff;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+
+    /* ============================================ */
+    /* ACCENT COLORS - For Flux Components         */
+    /* ============================================ */
+    --color-accent: var(--color-primary-600); /* Changed to use primary green */
+    --color-accent-content: var(--color-primary-600);
     --color-accent-foreground: var(--color-white);
+
+    /* ============================================ */
+    /* WHITE & BLACK                               */
+    /* ============================================ */
+    --color-white: #ffffff;
+    --color-black: #000000;
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(
+            --color-primary-400
+        ); /* Lighter green for dark mode */
+        --color-accent-content: var(--color-primary-400);
+        --color-accent-foreground: var(--color-neutral-900);
     }
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -45,22 +133,157 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Base body styles */
+    body {
+        @apply bg-neutral-50 text-neutral-900;
+    }
 }
 
+/* ============================================ */
+/* FLUX FORM COMPONENTS CUSTOMIZATION          */
+/* ============================================ */
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    @apply outline-hidden ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* ============================================ */
+/* CUSTOM UTILITY CLASSES                       */
+/* ============================================ */
+@layer utilities {
+    /* Container with max-width */
+    .container-custom {
+        @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+    }
+
+    /* Section spacing */
+    .section-padding {
+        @apply py-12 md:py-16 lg:py-20;
+    }
+
+    /* Heading gradient */
+    .heading-gradient {
+        @apply bg-gradient-to-r from-primary-600 to-secondary-700 bg-clip-text text-transparent;
+    }
+
+    /* Card styles */
+    .card {
+        @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300;
+    }
+
+    /* Button primary */
+    .btn-primary {
+        @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors duration-200;
+    }
+
+    /* Button secondary */
+    .btn-secondary {
+        @apply bg-secondary-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary-900 transition-colors duration-200;
+    }
+
+    /* Button outline */
+    .btn-outline {
+        @apply border-2 border-primary-600 text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-primary-600 hover:text-white transition-all duration-200;
+    }
+
+    /* Link with underline effect */
+    .link-underline {
+        @apply relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary-600 after:transition-all after:duration-300 hover:after:w-full;
+    }
+}
+
+/* ============================================ */
+/* RESPONSIVE TYPOGRAPHY                        */
+/* ============================================ */
+@layer base {
+    h1 {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900;
+    }
+
+    h2 {
+        @apply text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-900;
+    }
+
+    h3 {
+        @apply text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900;
+    }
+
+    h4 {
+        @apply text-lg md:text-xl lg:text-2xl font-semibold text-neutral-900;
+    }
+
+    h5 {
+        @apply text-base md:text-lg lg:text-xl font-medium text-neutral-900;
+    }
+
+    h6 {
+        @apply text-sm md:text-base lg:text-lg font-medium text-neutral-900;
+    }
+
+    p {
+        @apply text-base text-neutral-600 leading-relaxed;
+    }
+}
+
+/* ============================================ */
+/* ANIMATION UTILITIES                          */
+/* ============================================ */
+@layer utilities {
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    .animate-slide-down {
+        animation: slideDown 0.5s ease-out;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
