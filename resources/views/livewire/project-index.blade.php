@@ -27,7 +27,7 @@
                         Karya Kami
                     </span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-heading leading-tight animate-fade-in text-white"
+                <h1 class="text-5xl md:text-7xl font-heading font-bold leading-tight animate-fade-in text-white"
                     style="animation-delay: 0.1s;">
                     PORTOFOLIO
                     <span class="block text-primary-400 mt-2">PROYEK</span>

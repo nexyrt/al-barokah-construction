@@ -5,7 +5,7 @@
         {{-- Animated Grid Background --}}
         <div class="absolute inset-0 opacity-[0.03]">
             <div class="absolute inset-0"
-                style="background-image: linear-gradient(rgb(34, 197, 94) 1px, transparent 1px), linear-gradient(90deg, rgb(34, 197, 94) 1px, transparent 1px); background-size: 50px 50px;">
+                style="background-image: linear-gradient(rgb(37, 58, 45) 1px, transparent 1px), linear-gradient(90deg, rgb(37, 58, 45) 1px, transparent 1px); background-size: 50px 50px;">
             </div>
         </div>
 
@@ -26,7 +26,7 @@
                     <div class="h-px w-12 bg-gradient-to-l from-transparent to-primary-600"></div>
                 </div>
 
-                <h1 class="text-5xl md:text-7xl font-heading leading-tight text-secondary-900 animate-fade-in"
+                <h1 class="text-5xl md:text-7xl font-heading font-bold leading-tight text-secondary-900 animate-fade-in"
                     style="animation-delay: 0.1s;">
                     Bidang Usaha
                     <span
