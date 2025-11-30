@@ -52,9 +52,10 @@
                         </a>
                     </li>
                     <li>
-                        <span class="text-white/40 cursor-not-allowed">
+                        <a href="{{ route('business-fields.index') }}"
+                            class="text-white/80 hover:text-primary-400 transition-colors duration-300">
                             Bidang Usaha
-                        </span>
+                        </a>
                     </li>
                     <li>
                         <a href="{{ route('company.profile') }}"
@@ -63,9 +64,10 @@
                         </a>
                     </li>
                     <li>
-                        <span class="text-white/40 cursor-not-allowed">
+                        <a href="{{ route('company.profile') }}"
+                            class="text-white/80 hover:text-primary-400 transition-colors duration-300">
                             Kontak
-                        </span>
+                        </a>
                     </li>
                 </ul>
             </div>

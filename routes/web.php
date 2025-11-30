@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\BusinessFieldController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
-use App\Livewire\ContactPage;
 use App\Livewire\ProjectIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -36,8 +36,9 @@ Route::get('/bidang-usaha', [BusinessFieldController::class, 'index'])->name('bu
 // Profil Perusahaan
 Route::get('/profil', [CompanyController::class, 'index'])->name('company.profile');
 
-// Kontak (Livewire)
-// Route::get('/kontak', ContactPage::class)->name('contact');
+// Kontak
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/kontak', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Sitemap Route
 Route::get('/sitemap.xml', function () {

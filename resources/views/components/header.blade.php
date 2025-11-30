@@ -24,7 +24,8 @@
                     class="text-neutral-700 hover:text-primary-600 transition-all duration-300 font-medium {{ request()->routeIs('projects.index') ? 'text-primary-600' : '' }}">
                     Portofolio
                 </a>
-                <a href="#" class="text-neutral-400 font-medium cursor-not-allowed">
+                <a href="{{ route('business-fields.index') }}"
+                    class="text-neutral-700 hover:text-primary-600 transition-all duration-300 font-medium {{ request()->routeIs('business-fields.index') ? 'text-primary-600' : '' }}">
                     Bidang Usaha
                 </a>
                 <a href="{{ route('company.profile') }}"
@@ -32,7 +33,7 @@
                     Profil
                 </a>
 
-                <a href="{{ route('home') }}#contact"
+                <a href="{{ route('contact.index') }}"
                     class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300">
                     Hubungi Kami
                 </a>
@@ -78,7 +79,7 @@
                 Profil Perusahaan
             </span>
             <div class="pt-2">
-                <a href="{{ route('home') }}#contact"
+                <a href="{{ route('contact.index') }}"
                     class="block bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg text-center transition-all duration-300">
                     Hubungi Kami
                 </a>
