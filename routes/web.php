@@ -25,7 +25,7 @@ use Spatie\Sitemap\Tags\Url;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Portofolio/Proyek (Livewire)
-// Route::get('/proyek', ProjectIndex::class)->name('projects.index');
+Route::get('/proyek', ProjectIndex::class)->name('projects.index');
 
 // Detail Proyek (Blade)
 Route::get('/proyek/{slug}', [ProjectController::class, 'show'])->name('projects.show');

@@ -1,5 +1,9 @@
-@import "tailwindcss";
-@import "../../vendor/livewire/flux/dist/flux.css";
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,10 +13,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    /* Font Family */
-    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+    /* Font Families */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-heading: 'Bebas Neue', 'Impact', sans-serif;
 
     /* ============================================ */
     /* PRIMARY COLORS - Hijau Stabilo (Green)      */
@@ -22,7 +25,8 @@
     --color-primary-200: #bbf7d0;
     --color-primary-300: #86efac;
     --color-primary-400: #4ade80;
-    --color-primary-500: #22c55e; /* Main Primary - Hijau Stabilo */
+    --color-primary-500: #22c55e;
+    /* Main Primary - Hijau Stabilo */
     --color-primary-600: #16a34a;
     --color-primary-700: #15803d;
     --color-primary-800: #166534;
@@ -40,7 +44,8 @@
     --color-secondary-500: #3b82f6;
     --color-secondary-600: #2563eb;
     --color-secondary-700: #1e40af;
-    --color-secondary-800: #1e3a8a; /* Main Secondary - Biru Navy */
+    --color-secondary-800: #1e3a8a;
+    /* Main Secondary - Biru Navy */
     --color-secondary-900: #1e293b;
     --color-secondary-950: #0f172a;
 
@@ -104,7 +109,8 @@
     /* ============================================ */
     /* ACCENT COLORS - For Flux Components         */
     /* ============================================ */
-    --color-accent: var(--color-primary-600); /* Changed to use primary green */
+    --color-accent: var(--color-primary-600);
+    /* Changed to use primary green */
     --color-accent-content: var(--color-primary-600);
     --color-accent-foreground: var(--color-white);
 
@@ -117,15 +123,15 @@
 
 @layer theme {
     .dark {
-        --color-accent: var(
-            --color-primary-400
-        ); /* Lighter green for dark mode */
+        --color-accent: var(--color-primary-400);
+        /* Lighter green for dark mode */
         --color-accent-content: var(--color-primary-400);
         --color-accent-foreground: var(--color-neutral-900);
     }
 }
 
 @layer base {
+
     *,
     ::after,
     ::before,
@@ -141,7 +147,47 @@
 
     /* Base body styles */
     body {
-        @apply bg-neutral-50 text-neutral-900;
+        @apply bg-neutral-50 text-neutral-900 font-sans;
+    }
+
+    /* Headings dengan Bebas Neue */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-heading);
+        letter-spacing: 0.02em;
+    }
+
+    h1 {
+        @apply text-4xl md:text-5xl lg:text-6xl font-normal text-neutral-900;
+    }
+
+    h2 {
+        @apply text-3xl md:text-4xl lg:text-5xl font-normal text-neutral-900;
+    }
+
+    h3 {
+        @apply text-2xl md:text-3xl lg:text-4xl font-normal text-neutral-900;
+    }
+
+    h4 {
+        @apply text-xl md:text-2xl lg:text-3xl font-normal text-neutral-900;
+    }
+
+    h5 {
+        @apply text-lg md:text-xl lg:text-2xl font-normal text-neutral-900;
+    }
+
+    h6 {
+        @apply text-base md:text-lg lg:text-xl font-normal text-neutral-900;
+    }
+
+    /* Paragraph dengan Inter */
+    p {
+        @apply text-base text-neutral-600 leading-relaxed font-sans;
     }
 }
 
@@ -166,6 +212,7 @@ select:focus[data-flux-control] {
 /* CUSTOM UTILITY CLASSES                       */
 /* ============================================ */
 @layer utilities {
+
     /* Container with max-width */
     .container-custom {
         @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
@@ -205,38 +252,15 @@ select:focus[data-flux-control] {
     .link-underline {
         @apply relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary-600 after:transition-all after:duration-300 hover:after:w-full;
     }
-}
 
-/* ============================================ */
-/* RESPONSIVE TYPOGRAPHY                        */
-/* ============================================ */
-@layer base {
-    h1 {
-        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900;
+    /* Font Families */
+    .font-heading {
+        font-family: var(--font-heading);
+        letter-spacing: 0.02em;
     }
 
-    h2 {
-        @apply text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-900;
-    }
-
-    h3 {
-        @apply text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-900;
-    }
-
-    h4 {
-        @apply text-lg md:text-xl lg:text-2xl font-semibold text-neutral-900;
-    }
-
-    h5 {
-        @apply text-base md:text-lg lg:text-xl font-medium text-neutral-900;
-    }
-
-    h6 {
-        @apply text-sm md:text-base lg:text-lg font-medium text-neutral-900;
-    }
-
-    p {
-        @apply text-base text-neutral-600 leading-relaxed;
+    .font-body {
+        font-family: var(--font-sans);
     }
 }
 
@@ -261,6 +285,7 @@ select:focus[data-flux-control] {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -271,6 +296,7 @@ select:focus[data-flux-control] {
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -282,6 +308,7 @@ select:focus[data-flux-control] {
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;

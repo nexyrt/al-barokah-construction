@@ -13,6 +13,35 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    {{-- Alpine.js Hero Slideshow Component --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('heroSlideshow', () => ({
+                currentSlide: 0,
+                totalSlides: 3,
+
+                init() {
+                    // Auto-rotate slides every 5 seconds
+                    setInterval(() => {
+                        this.nextSlide();
+                    }, 5000);
+                },
+
+                nextSlide() {
+                    this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+                },
+
+                prevSlide() {
+                    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+                },
+
+                goToSlide(index) {
+                    this.currentSlide = index;
+                }
+            }));
+        });
+    </script>
 </head>
 
 <body class="font-sans antialiased bg-neutral-50">
@@ -26,6 +55,9 @@
     <x-footer />
 
     @livewireScripts
+
+    {{-- Stack for additional scripts --}}
+    @stack('scripts')
 </body>
 
 </html>

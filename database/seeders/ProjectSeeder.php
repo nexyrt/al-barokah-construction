@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\BusinessField;
 use App\Models\Project;
+use App\Models\BusinessField;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -32,7 +32,7 @@ class ProjectSeeder extends Seeder
                 'status' => 'completed',
                 'is_featured' => true,
                 'is_published' => true,
-                'thumbnail' => 'projects/gedung-perkantoran-thumb.jpg',
+                'thumbnail' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop', // Modern office building
                 'views_count' => 245,
                 'created_by' => $user->id,
             ],
@@ -51,7 +51,7 @@ class ProjectSeeder extends Seeder
                 'status' => 'completed',
                 'is_featured' => true,
                 'is_published' => true,
-                'thumbnail' => 'projects/jalan-tol-thumb.jpg',
+                'thumbnail' => 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&h=600&fit=crop', // Highway construction
                 'views_count' => 189,
                 'created_by' => $user->id,
             ],
@@ -70,7 +70,7 @@ class ProjectSeeder extends Seeder
                 'status' => 'ongoing',
                 'is_featured' => true,
                 'is_published' => true,
-                'thumbnail' => 'projects/mall-thumb.jpg',
+                'thumbnail' => 'https://images.unsplash.com/photo-1555529902-5261145633bf?w=800&h=600&fit=crop', // Shopping mall
                 'views_count' => 156,
                 'created_by' => $user->id,
             ],
@@ -89,7 +89,7 @@ class ProjectSeeder extends Seeder
                 'status' => 'ongoing',
                 'is_featured' => false,
                 'is_published' => true,
-                'thumbnail' => 'projects/bendungan-thumb.jpg',
+                'thumbnail' => 'https://images.unsplash.com/photo-1547481887-a26e2caa7260?w=800&h=600&fit=crop', // Dam/reservoir
                 'views_count' => 98,
                 'created_by' => $user->id,
             ],
@@ -108,7 +108,7 @@ class ProjectSeeder extends Seeder
                 'status' => 'ongoing',
                 'is_featured' => false,
                 'is_published' => true,
-                'thumbnail' => 'projects/hotel-thumb.jpg',
+                'thumbnail' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop', // Luxury hotel
                 'views_count' => 67,
                 'created_by' => $user->id,
             ],
