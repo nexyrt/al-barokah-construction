@@ -39,12 +39,13 @@
         @interact('column_name', $row)
             <div class="flex items-center gap-3">
                 @if ($row->icon)
-                    <img src="{{ asset('storage/' . $row->icon) }}" alt="{{ $row->name }}"
-                        class="h-10 w-10 rounded-lg object-cover">
-                @else
                     <div
                         class="h-10 w-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center shadow-lg">
-                        <x-icon name="briefcase" class="w-5 h-5 text-white" />
+                        <x-icon name="{{ $row->icon }}" class="w-5 h-5 text-white" />
+                    </div>
+                @else
+                    <div class="h-10 w-10 bg-zinc-200 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
+                        <x-icon name="briefcase" class="w-5 h-5 text-zinc-400" />
                     </div>
                 @endif
                 <div>

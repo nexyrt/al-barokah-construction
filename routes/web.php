@@ -83,10 +83,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/business-fields', \App\Livewire\Admin\BusinessFields\Index::class)->name('business-fields.index');
 
     // Tags (Coming Soon)
-    // Route::get('/tags', \App\Livewire\Admin\Tags\Index::class)->name('tags.index');
+    Route::get('/tags', \App\Livewire\Admin\Tags\Index::class)->name('tags.index');
 
     // Company (Coming Soon)
-    // Route::get('/company', \App\Livewire\Admin\Company\Edit::class)->name('company.edit');
+    Route::get('/company', \App\Livewire\Admin\Company\ProfileEdit::class)->name('company.edit');
     // Route::get('/legal', \App\Livewire\Admin\Legal\Edit::class)->name('legal.edit');
 
     // Messages (Coming Soon)

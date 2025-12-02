@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\BusinessFields;
+namespace App\Livewire\Admin\Tags;
 
 use App\Livewire\Traits\Alert;
-use App\Models\BusinessField;
+use App\Models\ProjectTag;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
@@ -11,7 +11,7 @@ class Delete extends Component
 {
     use Alert;
 
-    public BusinessField $businessField;
+    public ProjectTag $tag;
 
     // Inline render - No blade file needed
     public function render(): string
@@ -27,13 +27,13 @@ class Delete extends Component
     #[Renderless]
     public function confirm(): void
     {
-        $projectCount = $this->businessField->projects()->count();
+        $projectCount = $this->tag->projects()->count();
 
         $message = $projectCount > 0
-            ? "This business field has {$projectCount} associated projects. Deleting it will remove the business field from those projects."
+            ? "This tag is used in {$projectCount} projects. Deleting it will remove the tag from those projects."
             : 'This action cannot be undone.';
 
-        $this->question("Delete {$this->businessField->name}?", $message)
+        $this->question("Delete {$this->tag->name}?", $message)
             ->confirm(method: 'delete')
             ->cancel()
             ->send();
@@ -42,9 +42,9 @@ class Delete extends Component
     // Step 2: Execute delete
     public function delete(): void
     {
-        $this->businessField->delete();
+        $this->tag->delete();
 
         $this->dispatch('deleted');
-        $this->success('Business field deleted successfully');
+        $this->success('Tag deleted successfully');
     }
 }

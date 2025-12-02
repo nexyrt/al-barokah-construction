@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\BusinessFields;
+namespace App\Livewire\Admin\Tags;
 
 use App\Livewire\Traits\Alert;
-use App\Models\BusinessField;
+use App\Models\ProjectTag;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,59 +21,42 @@ class Index extends Component
 
     public ?string $search = null;
 
-    public ?string $statusFilter = null;
-
-    public array $sort = ['column' => 'display_order', 'direction' => 'asc'];
+    public array $sort = ['column' => 'name', 'direction' => 'asc'];
 
     // Bulk Actions
     public array $selected = [];
 
     // Static Headers
     public array $headers = [
-        ['index' => 'name', 'label' => 'Business Field'],
-        ['index' => 'short_description', 'label' => 'Description'],
+        ['index' => 'name', 'label' => 'Tag Name'],
+        ['index' => 'slug', 'label' => 'Slug'],
         ['index' => 'projects_count', 'label' => 'Projects', 'sortable' => false],
-        ['index' => 'is_active', 'label' => 'Status'],
-        ['index' => 'display_order', 'label' => 'Order'],
+        ['index' => 'created_at', 'label' => 'Created'],
         ['index' => 'action', 'label' => 'Actions', 'sortable' => false],
     ];
 
     public function render(): View
     {
-        return view('livewire.admin.business-fields.index');
+        return view('livewire.admin.tags.index');
     }
 
     // Data Loading dengan Computed
     #[Computed]
     public function rows(): LengthAwarePaginator
     {
-        return BusinessField::query()
+        return ProjectTag::query()
             ->withCount('projects')
-            ->when($this->search, fn (Builder $query) => $query->whereAny(['name', 'slug', 'short_description', 'description'], 'like', '%'.trim($this->search).'%')
-            )
-            ->when($this->statusFilter !== null, fn (Builder $query) => $query->where('is_active', $this->statusFilter === 'active')
+            ->when($this->search, fn (Builder $query) => $query->whereAny(['name', 'slug'], 'like', '%'.trim($this->search).'%')
             )
             ->orderBy($this->sort['column'], $this->sort['direction'])
             ->paginate($this->quantity)
             ->withQueryString();
     }
 
-    // Toggle Active Status
-    public function toggleActive(int $id): void
-    {
-        $field = BusinessField::findOrFail($id);
-        $field->update(['is_active' => ! $field->is_active]);
-
-        // Clear computed cache
-        unset($this->rows);
-
-        $this->success($field->is_active ? 'Business field activated' : 'Business field deactivated');
-    }
-
     // Clear Filters
     public function clearFilters(): void
     {
-        $this->reset(['search', 'statusFilter']);
+        $this->reset(['search']);
     }
 
     // Bulk Delete: Step 1 - Confirmation
@@ -85,7 +68,7 @@ class Index extends Component
         }
 
         $count = count($this->selected);
-        $this->question("Delete {$count} business fields?", 'This action cannot be undone. All related projects will lose their business field association.')
+        $this->question("Delete {$count} tags?", 'This action cannot be undone. Tags will be removed from all associated projects.')
             ->confirm(method: 'bulkDelete')
             ->cancel()
             ->send();
@@ -100,10 +83,10 @@ class Index extends Component
 
         $count = count($this->selected);
 
-        BusinessField::whereIn('id', $this->selected)->delete();
+        ProjectTag::whereIn('id', $this->selected)->delete();
 
         $this->selected = [];
         $this->resetPage();
-        $this->success("{$count} business fields deleted successfully");
+        $this->success("{$count} tags deleted successfully");
     }
 }

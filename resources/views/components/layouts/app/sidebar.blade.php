@@ -28,30 +28,24 @@
                     {{ __('Business Fields') }}
                 </flux:navlist.item>
 
-                {{-- <flux:navlist.item icon="tag" :href="route('admin.tags.index')"
+                <flux:navlist.item icon="tag" :href="route('admin.tags.index')"
                     :current="request()->routeIs('admin.tags.*')" wire:navigate>
                     {{ __('Tags') }}
-                </flux:navlist.item> --}}
+                </flux:navlist.item>
             </flux:navlist.group>
 
             {{-- Company (Coming Soon) --}}
-            {{-- <flux:navlist.group :heading="__('Company')" class="grid">
-        <flux:navlist.item 
-            icon="building" 
-            :href="route('admin.company.edit')"
-            :current="request()->routeIs('admin.company.*')" 
-            wire:navigate>
-            {{ __('Company Info') }}
-        </flux:navlist.item>
+            <flux:navlist.group :heading="__('Company')" class="grid">
+                <flux:navlist.item :href="route('admin.company.edit')"
+                    :current="request()->routeIs('admin.company.*')" wire:navigate>
+                    {{ __('Company Info') }}
+                </flux:navlist.item>
 
-        <flux:navlist.item 
-            icon="document-text" 
-            :href="route('admin.legal.edit')"
-            :current="request()->routeIs('admin.legal.*')" 
-            wire:navigate>
-            {{ __('Legal Data') }}
-        </flux:navlist.item>
-    </flux:navlist.group> --}}
+                {{-- <flux:navlist.item icon="document-text" :href="route('admin.legal.edit')"
+                    :current="request()->routeIs('admin.legal.*')" wire:navigate>
+                    {{ __('Legal Data') }}
+                </flux:navlist.item> --}}
+            </flux:navlist.group>
 
             {{-- Messages (Coming Soon) --}}
             {{-- <flux:navlist.group :heading="__('Communication')" class="grid">
@@ -86,8 +80,6 @@
                 {{ __('View Website') }}
             </flux:navlist.item>
         </flux:navlist>
-
-        <flux:spacer />
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">

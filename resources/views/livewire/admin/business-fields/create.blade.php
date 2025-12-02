@@ -52,22 +52,72 @@
                     <p class="text-xs text-zinc-500 dark:text-zinc-400">Visual representation and ordering</p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <x-upload wire:model="icon" label="Icon" tip="PNG, JPG up to 2MB" accept="image/*" />
+                {{-- Icon Picker --}}
+                <div>
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                        Choose Icon
+                    </label>
 
+                    {{-- Selected Icon Preview --}}
+                    @if ($icon)
+                        <div
+                            class="mb-3 flex items-center gap-3 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
+                            <div
+                                class="h-12 w-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center shadow-lg">
+                                <x-icon name="{{ $icon }}" class="w-6 h-6 text-white" />
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                                    {{ ucwords(str_replace('-', ' ', $icon)) }}</p>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400">Selected icon</p>
+                            </div>
+                            <x-button wire:click="$set('icon', null)" size="sm" color="secondary" outline
+                                icon="x-mark">
+                                Clear
+                            </x-button>
+                        </div>
+                    @endif
+
+                    {{-- Search Icons --}}
+                    <x-input wire:model.live="iconSearch" placeholder="Search icons..." icon="magnifying-glass" />
+
+                    {{-- Icon Grid --}}
+                    <div
+                        class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2 max-h-64 overflow-y-auto p-2 bg-zinc-50 dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 mt-6">
+                        @foreach ($this->availableIcons() as $iconName => $iconLabel)
+                            <button type="button" wire:click="selectIcon('{{ $iconName }}')"
+                                class="group relative h-12 w-12 rounded-lg border-2 transition-all hover:scale-110
+                                           {{ $icon === $iconName
+                                               ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                                               : 'border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:border-primary-300' }}"
+                                title="{{ $iconLabel }}">
+                                <x-icon name="{{ $iconName }}"
+                                    class="w-6 h-6 mx-auto {{ $icon === $iconName ? 'text-primary-600 dark:text-primary-400' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-primary-500' }}" />
+                            </button>
+                        @endforeach
+                    </div>
+
+                    @if (count($this->availableIcons()) === 0)
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 text-center py-4">
+                            No icons found matching "{{ $iconSearch }}"
+                        </p>
+                    @endif
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <x-input wire:model="display_order" type="number" label="Display Order" placeholder="0"
                         min="0">
                         <x-slot:hint>
                             <span class="text-xs">Lower numbers appear first</span>
                         </x-slot:hint>
                     </x-input>
-                </div>
 
-                <div class="flex items-center gap-3">
-                    <x-toggle wire:model="is_active" label="Active" />
-                    <span class="text-sm text-zinc-600 dark:text-zinc-400">
-                        Make this business field visible in public pages
-                    </span>
+                    <div class="flex items-center gap-3 lg:pt-6">
+                        <x-toggle wire:model="is_active" label="Active" />
+                        <span class="text-sm text-zinc-600 dark:text-zinc-400">
+                            Visible in public pages
+                        </span>
+                    </div>
                 </div>
             </div>
         </form>
