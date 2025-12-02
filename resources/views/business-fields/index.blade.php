@@ -40,19 +40,6 @@
                     Al-Barokah menyediakan layanan konstruksi terpadu dengan spesialisasi di berbagai bidang untuk
                     memenuhi kebutuhan pembangunan Anda
                 </p>
-
-                {{-- Stats Preview --}}
-                <div class="flex justify-center gap-8 pt-4 animate-fade-in" style="animation-delay: 0.3s;">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-600">{{ $stats['total_fields'] }}</div>
-                        <div class="text-sm text-neutral-600">Bidang Usaha</div>
-                    </div>
-                    <div class="w-px bg-neutral-200"></div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-600">{{ $stats['completed_projects'] }}+</div>
-                        <div class="text-sm text-neutral-600">Proyek Selesai</div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -75,18 +62,9 @@
                             {{-- Header --}}
                             <div class="flex items-start gap-4 mb-6">
                                 {{-- Icon --}}
-                                <div class="relative">
-                                    <div
-                                        class="absolute inset-0 bg-primary-600 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500">
-                                    </div>
-                                    <div
-                                        class="relative p-4 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-500">
-                                        <svg class="h-8 w-8 text-primary-600 group-hover:text-white transition-colors duration-500"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="{{ $iconMap[$field->icon] ?? $iconMap['building-2'] }}"></path>
-                                        </svg>
-                                    </div>
+                                <div
+                                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <x-icon name="{{ $field->icon }}" class="w-8 h-8 text-primary-600" />
                                 </div>
 
                                 {{-- Title & Badge --}}
@@ -130,9 +108,9 @@
                                     <span>Tersedia</span>
                                 </div>
 
-                                <a href="{{ route('projects.index') }}?business_field={{ $field->id }}"
+                                <a href="{{ route('business-fields.show', $field->slug) }}"
                                     class="inline-flex items-center gap-2 px-6 py-3 bg-secondary-900 hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
-                                    <span>Lihat Proyek</span>
+                                    <span>Pelajari Lebih Lanjut</span>
                                     <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -313,7 +291,7 @@
                         </path>
                     </svg>
                 </div>
-                <h2 class="text-3xl md:text-4xl font-heading font-bold">
+                <h2 class="text-3xl md:text-4xl font-heading text-white font-bold">
                     Butuh Konsultasi Proyek Konstruksi?
                 </h2>
                 <p class="text-lg text-white/90">

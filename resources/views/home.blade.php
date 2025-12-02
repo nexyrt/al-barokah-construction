@@ -1,83 +1,103 @@
 <x-layouts.public>
 
-    {{-- Hero Slideshow Section --}}
-    <section class="relative h-[600px] md:h-[700px] overflow-hidden" x-data="heroSlideshow()" x-init="totalSlides = {{ $featuredProjects->take(3)->count() }}">
+    {{-- Hero Slideshow Section - FIXED: Added mt-20 --}}
+    <section x-data="heroSlideshow()" x-init="totalSlides = {{ $featuredProjects->take(3)->count() }}" class="relative h-[600px] md:h-[700px]">
 
-        {{-- Slides --}}
         @foreach ($featuredProjects->take(3) as $index => $project)
             <div x-show="currentSlide === {{ $index }}" x-transition:enter="transition-opacity duration-1000"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0" class="absolute inset-0"
                 style="{{ $index !== 0 ? 'display: none;' : '' }}">
-                {{-- Background with Gradient Overlay --}}
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-secondary-900 via-secondary-800/90 to-secondary-900/70">
+
+                {{-- Background Layers --}}
+                <div class="absolute inset-0">
+                    {{-- Gradient Overlay --}}
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-secondary-900 via-secondary-800/90 to-secondary-900/70 z-10">
+                    </div>
+
+                    {{-- Background Image or Gradient --}}
+                    @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
+                        <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                            style="background-image: url('{{ $project->thumbnail }}');"></div>
+                    @elseif($project->thumbnail)
+                        <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                            style="background-image: url('{{ asset('storage/' . $project->thumbnail) }}');"></div>
+                    @else
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700 opacity-20">
+                        </div>
+                    @endif
                 </div>
 
-                {{-- Background Image Placeholder --}}
-                @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
-                    <div class="absolute inset-0 bg-cover bg-center opacity-20"
-                        style="background-image: url('{{ $project->thumbnail }}');"></div>
-                @elseif($project->thumbnail)
-                    <div class="absolute inset-0 bg-cover bg-center opacity-20"
-                        style="background-image: url('{{ asset('storage/' . $project->thumbnail) }}');"></div>
-                @else
-                    {{-- Placeholder gradient jika tidak ada image --}}
-                    <div class="absolute inset-0 opacity-20">
-                        <div class="w-full h-full bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700">
-                        </div>
-                    </div>
-                @endif
-
                 {{-- Content --}}
-                <div class="relative h-full container-custom flex items-center">
-                    <div class="max-w-3xl text-white animate-fade-in">
-                        {{-- Badge --}}
-                        <div class="inline-block px-4 py-2 bg-primary-600/30 backdrop-blur-sm rounded-full mb-4">
-                            <span class="text-primary-400 font-semibold text-sm">
-                                {{ $project->businessField->name }}
-                            </span>
-                        </div>
-
-                        {{-- Title --}}
-                        <h1 class="text-4xl md:text-6xl font-heading mb-4 leading-tight text-white">
-                            {{ $project->title }}
-                        </h1>
-
-                        {{-- Description --}}
-                        <p class="text-lg md:text-xl text-white/90 mb-6 leading-relaxed">
-                            {{ Str::limit($project->description, 150) }}
-                        </p>
-
-                        {{-- Meta Info --}}
-                        <div class="flex gap-3 mb-8 flex-wrap">
-                            <div class="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                                <span class="text-sm">📍 {{ $project->location }}</span>
+                <div class="relative z-20 h-full flex items-center">
+                    <div class="container-custom">
+                        <div class="max-w-4xl">
+                            {{-- Badge --}}
+                            <div
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600/30 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
+                                <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                    </path>
+                                </svg>
+                                <span
+                                    class="text-primary-300 font-semibold text-sm">{{ $project->businessField->name }}</span>
                             </div>
-                            <div class="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                                <span class="text-sm">
-                                    @if ($project->status === 'completed')
-                                        ✅ Selesai
-                                    @elseif($project->status === 'ongoing')
-                                        🚧 Dalam Pengerjaan
-                                    @else
-                                        📋 Perencanaan
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
 
-                        {{-- CTA Buttons --}}
-                        <div class="flex gap-4 flex-wrap">
-                            <a href="{{ route('home') }}#projects"
-                                class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 inline-flex items-center">
-                                <span>Lihat Portofolio</span>
-                            </a>
-                            <a href="{{ route('home') }}#contact"
-                                class="border-2 border-white text-white hover:bg-white hover:text-secondary-900 font-semibold px-8 py-4 rounded-lg transition-all duration-300">
-                                Konsultasi Gratis
-                            </a>
+                            {{-- Title --}}
+                            <h1 class="text-4xl md:text-6xl font-heading mb-4 leading-tight text-white">
+                                {{ $project->title }}
+                            </h1>
+
+                            {{-- Description --}}
+                            <p class="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl">
+                                {{ Str::limit($project->description, 150) }}
+                            </p>
+
+                            {{-- Meta Info --}}
+                            <div class="flex flex-wrap gap-4 mb-8">
+                                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                    <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span class="text-white text-sm">{{ $project->location }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                    <span class="text-white text-sm">
+                                        {{ $project->status === 'completed' ? '✅ Selesai' : ($project->status === 'ongoing' ? '🔄 Dalam Pengerjaan' : '📋 Perencanaan') }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- CTA Buttons --}}
+                            <div class="flex flex-wrap gap-4">
+                                <a href="{{ route('projects.index') }}"
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-8 py-4 rounded-lg inline-flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                    <span>Lihat Portofolio</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                                <a href="{{ route('contact.index') }}"
+                                    class="bg-white/10 backdrop-blur-sm border-2 border-white hover:bg-white hover:text-secondary-900 text-white font-semibold px-8 py-4 rounded-lg inline-flex items-center gap-2 transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                        </path>
+                                    </svg>
+                                    <span>Konsultasi Gratis</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,159 +106,149 @@
 
         {{-- Navigation Arrows --}}
         <button @click="prevSlide()"
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300"
-            aria-label="Previous slide">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group">
+            <svg class="w-6 h-6 text-white group-hover:-translate-x-1 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
         </button>
         <button @click="nextSlide()"
-            class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300"
-            aria-label="Next slide">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group">
+            <svg class="w-6 h-6 text-white group-hover:translate-x-1 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
         </button>
 
-        {{-- Slide Indicators --}}
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+        {{-- Dot Indicators --}}
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
             @foreach ($featuredProjects->take(3) as $index => $project)
                 <button @click="goToSlide({{ $index }})"
-                    :class="currentSlide === {{ $index }} ? 'bg-primary-600 w-8' : 'bg-white/50 hover:bg-white/80'"
-                    class="h-3 rounded-full transition-all duration-300 {{ $index === 0 ? 'w-8 bg-primary-600' : 'w-3 bg-white/50' }}"
-                    aria-label="Go to slide {{ $index + 1 }}"></button>
+                    :class="currentSlide === {{ $index }} ? 'bg-primary-600 w-8' : 'bg-white/50 w-3'"
+                    class="h-3 rounded-full transition-all duration-300">
+                </button>
             @endforeach
         </div>
     </section>
 
     {{-- Statistics Section --}}
-    <section class="py-16 bg-secondary-900">
+    <section class="bg-secondary-900 py-16">
         <div class="container-custom">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {{-- Stat 1 --}}
                 <div class="text-center group animate-fade-in">
                     <div
-                        class="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-4 group-hover:scale-110 transition-all duration-300">
+                        class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
                             </path>
                         </svg>
                     </div>
-                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">
-                        {{ $stats['total_projects'] }}+
+                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">{{ $stats['total_projects'] }}+
                     </div>
-                    <div class="text-sm md:text-base text-white/80 font-medium">
-                        Proyek Selesai
-                    </div>
+                    <div class="text-sm md:text-base text-white/80">Proyek Selesai</div>
                 </div>
 
                 {{-- Stat 2 --}}
                 <div class="text-center group animate-fade-in" style="animation-delay: 0.1s;">
                     <div
-                        class="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-4 group-hover:scale-110 transition-all duration-300">
-                        <svg class="w-8 h-8 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-success-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                             </path>
                         </svg>
                     </div>
-                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">
-                        {{ $stats['total_clients'] }}+
+                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">{{ $stats['total_clients'] }}+
                     </div>
-                    <div class="text-sm md:text-base text-white/80 font-medium">
-                        Klien Puas
-                    </div>
+                    <div class="text-sm md:text-base text-white/80">Klien Puas</div>
                 </div>
 
                 {{-- Stat 3 --}}
                 <div class="text-center group animate-fade-in" style="animation-delay: 0.2s;">
                     <div
-                        class="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-4 group-hover:scale-110 transition-all duration-300">
-                        <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">
-                        {{ $stats['years_experience'] }}+
+                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">{{ $stats['years_experience'] }}+
                     </div>
-                    <div class="text-sm md:text-base text-white/80 font-medium">
-                        Tahun Pengalaman
-                    </div>
+                    <div class="text-sm md:text-base text-white/80">Tahun Pengalaman</div>
                 </div>
 
                 {{-- Stat 4 --}}
                 <div class="text-center group animate-fade-in" style="animation-delay: 0.3s;">
                     <div
-                        class="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-4 group-hover:scale-110 transition-all duration-300">
+                        class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                         <svg class="w-8 h-8 text-info-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                             </path>
                         </svg>
                     </div>
-                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">
-                        {{ $stats['business_fields'] }}
+                    <div class="text-4xl md:text-5xl font-heading text-white mb-2">{{ $stats['business_fields'] }}
                     </div>
-                    <div class="text-sm md:text-base text-white/80 font-medium">
-                        Bidang Usaha
-                    </div>
+                    <div class="text-sm md:text-base text-white/80">Bidang Usaha</div>
                 </div>
             </div>
         </div>
     </section>
 
     {{-- Business Fields Section --}}
-    <section class="py-24 bg-neutral-50">
+    <section class="section-padding bg-neutral-50">
         <div class="container-custom">
             {{-- Section Header --}}
-            <div class="text-center mb-16 animate-fade-in">
-                <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
-                    Layanan Kami
-                </span>
-                <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
-                    BIDANG USAHA
-                </h2>
-                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
-                    Solusi konstruksi komprehensif untuk berbagai kebutuhan proyek Anda
-                </p>
+            <div class="text-center mb-12">
+                <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Layanan Kami</span>
+                <h2 class="text-3xl md:text-5xl font-heading font-bold text-secondary-900 mt-2">BIDANG USAHA</h2>
             </div>
 
             {{-- Business Fields Grid --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 @foreach ($businessFields as $index => $field)
-                    <div class="card group p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-600 cursor-pointer animate-fade-in"
+                    <div class="card group hover:shadow-xl transition-all duration-300 animate-fade-in"
                         style="animation-delay: {{ $index * 0.1 }}s;">
-                        {{-- Icon --}}
-                        <div
-                            class="w-14 h-14 bg-primary-100 group-hover:bg-primary-600 rounded-lg flex items-center justify-center mb-4 transition-all duration-300">
-                            <svg class="w-7 h-7 text-primary-600 group-hover:text-white transition-colors duration-300"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                </path>
-                            </svg>
-                        </div>
+                        <div class="p-6">
+                            {{-- Icon --}}
+                            <div
+                                class="w-14 h-14 bg-primary-100 group-hover:bg-primary-600 rounded-lg flex items-center justify-center mb-4 transition-all duration-300">
+                                <svg class="w-7 h-7 text-primary-600 group-hover:text-white transition-colors duration-300"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="{{ $iconMap[$field->icon] ?? 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' }}">
+                                    </path>
+                                </svg>
+                            </div>
 
-                        {{-- Content --}}
-                        <h3
-                            class="text-xl font-heading text-secondary-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">
-                            {{ $field->name }}
-                        </h3>
-                        <p class="text-neutral-600 leading-relaxed mb-4">
-                            {{ $field->short_description }}
-                        </p>
+                            {{-- Content --}}
+                            <h3
+                                class="text-xl font-heading font-bold text-secondary-900 mb-2 group-hover:text-primary-600 transition-colors">
+                                {{ $field->name }}
+                            </h3>
+                            <p class="text-neutral-600 mb-4 leading-relaxed">
+                                {{ $field->short_description }}
+                            </p>
 
-                        {{-- Footer --}}
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-primary-600 font-semibold">
-                                {{ $field->projects_count }} Proyek
-                            </span>
-                            <span
-                                class="text-sm text-neutral-600 group-hover:text-primary-600 transition-colors duration-300">
-                                Lihat Detail →
-                            </span>
+                            {{-- Footer --}}
+                            <div class="flex items-center justify-between pt-4 border-t border-neutral-200">
+                                <span class="text-sm text-neutral-500">
+                                    <strong>{{ $field->projects_count }}</strong> Proyek
+                                </span>
+                                <a href="{{ route('business-fields.index') }}"
+                                    class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1 group/link">
+                                    <span>Lihat Detail</span>
+                                    <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -246,267 +256,426 @@
 
             {{-- View All Button --}}
             <div class="text-center">
-                <span class="btn-outline inline-flex items-center opacity-50 cursor-not-allowed">
+                <a href="{{ route('business-fields.index') }}"
+                    class="inline-flex items-center gap-2 bg-secondary-900 hover:bg-primary-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
                     <span>Lihat Semua Bidang Usaha</span>
-                </span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                        </path>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
 
     {{-- Featured Projects Section --}}
-    <section id="projects" class="py-24 bg-white">
+    <section class="section-padding bg-white">
         <div class="container-custom">
             {{-- Section Header --}}
-            <div class="text-center mb-16 animate-fade-in">
-                <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
-                    Portofolio
-                </span>
-                <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
-                    PROYEK UNGGULAN
-                </h2>
-                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
-                    Berbagai proyek konstruksi berkualitas yang telah kami kerjakan dengan dedikasi penuh
-                </p>
+            <div class="text-center mb-12">
+                <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">Portofolio</span>
+                <h2 class="text-3xl md:text-5xl font-heading font-bold text-secondary-900 mt-2">PROYEK UNGGULAN</h2>
             </div>
 
             {{-- Projects Grid --}}
-            @if ($featuredProjects->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                    @foreach ($featuredProjects as $index => $project)
-                        <div class="card group overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer animate-fade-in"
-                            style="animation-delay: {{ $index * 0.1 }}s;">
-                            {{-- Image or Placeholder --}}
-                            <div class="h-56 relative overflow-hidden">
-                                @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
-                                    {{-- External URL --}}
-                                    <img src="{{ $project->thumbnail }}" alt="{{ $project->title }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                @elseif($project->thumbnail)
-                                    {{-- Local Storage --}}
-                                    <img src="{{ asset('storage/' . $project->thumbnail) }}"
-                                        alt="{{ $project->title }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                @else
-                                    {{-- Gradient Placeholder --}}
-                                    <div
-                                        class="w-full h-full bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700 flex items-center justify-center">
-                                        <span
-                                            class="text-white text-6xl font-bold opacity-30">{{ substr($project->title, 0, 1) }}</span>
-                                    </div>
-                                @endif
-
-                                {{-- Overlay --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                @foreach ($featuredProjects as $index => $project)
+                    <a href="{{ route('projects.show', $project->slug) }}"
+                        class="card group overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-in"
+                        style="animation-delay: {{ $index * 0.1 }}s;">
+                        {{-- Image Container --}}
+                        <div class="h-56 bg-neutral-200 relative overflow-hidden">
+                            @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
+                                <img src="{{ $project->thumbnail }}" alt="{{ $project->title }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            @elseif($project->thumbnail)
+                                <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            @else
                                 <div
-                                    class="absolute inset-0 bg-secondary-900/80 group-hover:bg-secondary-900/60 transition-all duration-300 flex items-center justify-center p-6">
-                                    <div class="text-center text-white">
-                                        <span
-                                            class="inline-block bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                                            {{ $project->businessField->name }}
-                                        </span>
-                                        <h3 class="text-xl font-heading line-clamp-2 text-white">
-                                            {{ $project->title }}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- Content --}}
-                            <div class="p-5">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div class="flex-1">
-                                        <p class="text-sm text-neutral-600 mb-1">
-                                            <strong>Klien:</strong> {{ $project->client_name }}
-                                        </p>
-                                        <p class="text-sm text-neutral-600 flex items-center gap-1">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                                </path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                            {{ $project->location }}
-                                        </p>
-                                    </div>
+                                    class="w-full h-full bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700 flex items-center justify-center">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                {{ $project->status === 'completed' ? 'bg-success-100 text-success-700' : 'bg-warning-100 text-warning-700' }}">
-                                        {{ $project->status === 'completed' ? 'Selesai' : 'Dalam Pengerjaan' }}
-                                    </span>
+                                        class="text-white text-6xl font-bold opacity-30">{{ substr($project->title, 0, 1) }}</span>
                                 </div>
-                                <div class="flex items-center justify-between pt-3 border-t border-neutral-200">
-                                    <div class="flex items-center gap-1 text-xs text-neutral-500">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                            </path>
-                                        </svg>
-                                        {{ $project->views_count }}
-                                    </div>
+                            @endif
+
+                            {{-- Overlay --}}
+                            <div
+                                class="absolute inset-0 bg-secondary-900/80 group-hover:bg-secondary-900/60 transition-all duration-300 flex items-center justify-center p-6">
+                                <div class="text-center text-white">
+                                    <span
+                                        class="inline-block bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                                        {{ $project->businessField->name }}
+                                    </span>
+                                    <h3 class="text-xl font-heading line-clamp-2 text-white">
+                                        {{ $project->title }}
+                                    </h3>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-12">
-                    <p class="text-neutral-500">Belum ada proyek unggulan</p>
-                </div>
-            @endif
+
+                        {{-- Content --}}
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex-1">
+                                    <p class="text-sm text-neutral-600 mb-1">
+                                        <strong>Klien:</strong> {{ $project->client_name }}
+                                    </p>
+                                    <p class="text-sm text-neutral-600 flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        {{ $project->location }}
+                                    </p>
+                                </div>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {{ $project->status === 'completed' ? 'bg-success-100 text-success-700' : ($project->status === 'ongoing' ? 'bg-warning-100 text-warning-700' : 'bg-info-100 text-info-700') }}">
+                                    {{ $project->status === 'completed' ? 'Selesai' : ($project->status === 'ongoing' ? 'Berlangsung' : 'Perencanaan') }}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-neutral-200">
+                                <div class="flex items-center gap-1 text-xs text-neutral-500">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                    {{ $project->views_count }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
 
             {{-- View All Button --}}
             <div class="text-center">
-                <span
-                    class="bg-primary-600 text-white font-semibold px-8 py-4 rounded-lg inline-flex items-center opacity-50 cursor-not-allowed">
+                <a href="{{ route('projects.index') }}"
+                    class="inline-flex items-center gap-2 bg-secondary-900 hover:bg-primary-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl">
                     <span>Lihat Semua Proyek</span>
-                </span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                        </path>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
 
-    {{-- Testimonials Section --}}
-    @if ($testimonials->count() > 0)
-        <section class="py-24 bg-neutral-50">
-            <div class="container-custom">
-                {{-- Section Header --}}
-                <div class="text-center mb-16 animate-fade-in">
-                    <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
-                        Testimoni
-                    </span>
-                    <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
-                        APA KATA KLIEN KAMI
-                    </h2>
-                    <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
-                        Kepercayaan dan kepuasan klien adalah prioritas utama kami
-                    </p>
+    {{-- Clients Section - FIXED --}}
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="container-custom">
+            {{-- Section Header --}}
+            <div class="text-center mb-16 animate-fade-in">
+                <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
+                    Kepercayaan
+                </span>
+                <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
+                    CLIENT KAMI
+                </h2>
+                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
+                    Dipercaya oleh perusahaan dan institusi terkemuka di Kalimantan Timur
+                </p>
+            </div>
+
+            {{-- Infinite Scrolling Logos --}}
+            <div class="relative">
+                {{-- Gradient Overlays --}}
+                <div class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10">
                 </div>
 
-                {{-- Testimonials Grid --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                    @foreach ($testimonials as $index => $testimonial)
-                        <div class="card p-6 animate-fade-in hover:shadow-xl transition-all duration-300"
-                            style="animation-delay: {{ $index * 0.1 }}s;">
-                            <div class="flex items-start gap-4 mb-4">
+                <div class="overflow-hidden">
+                    <div class="flex animate-scroll-slow gap-8">
+                        {{-- First Set --}}
+                        @foreach ($clients as $client)
+                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
                                 <div
-                                    class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    {{-- Rating Stars --}}
-                                    <div class="flex items-center gap-1 mb-2">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-4 h-4 {{ $i <= $testimonial->rating ? 'fill-warning-500 text-warning-500' : 'fill-neutral-300 text-neutral-300' }}"
-                                                viewBox="0 0 20 20">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                        @endfor
+                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
+                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                            </path>
+                                        </svg>
                                     </div>
-
-                                    {{-- Testimonial Text --}}
-                                    <p class="text-neutral-600 leading-relaxed italic mb-4">
-                                        "{{ $testimonial->testimonial }}"
-                                    </p>
-
-                                    {{-- Client Info --}}
-                                    <div class="border-t border-neutral-200 pt-4">
-                                        <p class="font-semibold text-secondary-900">
-                                            {{ $testimonial->client_name }}
+                                    <div class="text-center">
+                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
+                                            {{ $client['name'] }}
                                         </p>
-                                        <p class="text-sm text-neutral-600">
-                                            {{ $testimonial->position }}
-                                        </p>
-                                        <p class="text-sm text-primary-600 font-medium">
-                                            {{ $testimonial->company }}
+                                        <p class="text-xs text-neutral-500 mt-1">
+                                            {{ $client['industry'] }}
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+
+                        {{-- Second Set (Duplicate) --}}
+                        @foreach ($clients as $client)
+                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
+                                <div
+                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
+                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
+                                            {{ $client['name'] }}
+                                        </p>
+                                        <p class="text-xs text-neutral-500 mt-1">
+                                            {{ $client['industry'] }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        {{-- Third Set (Duplicate) --}}
+                        @foreach ($clients as $client)
+                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
+                                <div
+                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
+                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
+                                            {{ $client['name'] }}
+                                        </p>
+                                        <p class="text-xs text-neutral-500 mt-1">
+                                            {{ $client['industry'] }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 
-    {{-- CTA Section --}}
-    <section id="contact"
-        class="py-20 bg-gradient-to-br from-secondary-900 via-secondary-900 to-secondary-800 relative overflow-hidden">
-        {{-- Background Pattern --}}
-        <div class="absolute inset-0 bg-cover bg-center opacity-10"
-            style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070');">
+    {{-- FAQ Section - NEW --}}
+    <section class="py-24 bg-neutral-50">
+        <div class="container-custom">
+            <div class="text-center mb-16 animate-fade-in">
+                <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
+                    Pertanyaan Umum
+                </span>
+                <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
+                    FREQUENTLY ASKED QUESTIONS
+                </h2>
+                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
+                    Temukan jawaban untuk pertanyaan yang sering diajukan tentang layanan kami
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-4" x-data="{ openFaq: null }">
+                {{-- FAQ 1 --}}
+                <div
+                    class="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-600">
+                    <button @click="openFaq = openFaq === 1 ? null : 1"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between">
+                        <span class="font-semibold text-secondary-900 pr-4">Berapa lama waktu yang dibutuhkan untuk
+                            menyelesaikan proyek konstruksi?</span>
+                        <svg class="w-5 h-5 text-primary-600 flex-shrink-0 transition-transform"
+                            :class="{ 'rotate-180': openFaq === 1 }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 1" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                        class="px-6 pb-5 text-neutral-600 leading-relaxed" style="display: none;">
+                        Waktu penyelesaian proyek tergantung pada skala dan kompleksitas pekerjaan. Kami akan memberikan
+                        estimasi waktu yang akurat setelah evaluasi proyek Anda. Biasanya, proyek bangunan komersial
+                        memerlukan waktu 6-18 bulan.
+                    </div>
+                </div>
+
+                {{-- FAQ 2 --}}
+                <div
+                    class="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-600">
+                    <button @click="openFaq = openFaq === 2 ? null : 2"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between">
+                        <span class="font-semibold text-secondary-900 pr-4">Apakah ada garansi untuk pekerjaan
+                            konstruksi?</span>
+                        <svg class="w-5 h-5 text-primary-600 flex-shrink-0 transition-transform"
+                            :class="{ 'rotate-180': openFaq === 2 }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 2" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                        class="px-6 pb-5 text-neutral-600 leading-relaxed" style="display: none;">
+                        Ya, kami memberikan garansi untuk semua pekerjaan konstruksi. Periode garansi bervariasi
+                        tergantung jenis pekerjaan, biasanya antara 1-3 tahun untuk struktur bangunan dan 6-12 bulan
+                        untuk finishing.
+                    </div>
+                </div>
+
+                {{-- FAQ 3 --}}
+                <div
+                    class="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-600">
+                    <button @click="openFaq = openFaq === 3 ? null : 3"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between">
+                        <span class="font-semibold text-secondary-900 pr-4">Bagaimana sistem pembayaran untuk proyek
+                            konstruksi?</span>
+                        <svg class="w-5 h-5 text-primary-600 flex-shrink-0 transition-transform"
+                            :class="{ 'rotate-180': openFaq === 3 }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 3" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                        class="px-6 pb-5 text-neutral-600 leading-relaxed" style="display: none;">
+                        Sistem pembayaran kami fleksibel dan disesuaikan dengan kesepakatan. Umumnya menggunakan sistem
+                        termin berdasarkan progress pekerjaan: 30% DP, 40% saat progress 50%, dan 30% saat selesai.
+                    </div>
+                </div>
+
+                {{-- FAQ 4 --}}
+                <div
+                    class="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-600">
+                    <button @click="openFaq = openFaq === 4 ? null : 4"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between">
+                        <span class="font-semibold text-secondary-900 pr-4">Apakah menyediakan layanan konsultasi
+                            gratis?</span>
+                        <svg class="w-5 h-5 text-primary-600 flex-shrink-0 transition-transform"
+                            :class="{ 'rotate-180': openFaq === 4 }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 4" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                        class="px-6 pb-5 text-neutral-600 leading-relaxed" style="display: none;">
+                        Ya, kami menyediakan konsultasi gratis untuk evaluasi awal proyek Anda. Tim ahli kami akan
+                        membantu menganalisis kebutuhan dan memberikan rekomendasi terbaik tanpa biaya.
+                    </div>
+                </div>
+
+                {{-- FAQ 5 --}}
+                <div
+                    class="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden transition-all duration-300 hover:border-primary-600">
+                    <button @click="openFaq = openFaq === 5 ? null : 5"
+                        class="w-full px-6 py-5 text-left flex items-center justify-between">
+                        <span class="font-semibold text-secondary-900 pr-4">Apakah memiliki sertifikasi dan legalitas
+                            yang lengkap?</span>
+                        <svg class="w-5 h-5 text-primary-600 flex-shrink-0 transition-transform"
+                            :class="{ 'rotate-180': openFaq === 5 }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 5" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                        class="px-6 pb-5 text-neutral-600 leading-relaxed" style="display: none;">
+                        Ya, kami memiliki semua sertifikasi dan legalitas yang diperlukan, termasuk SIUJK (Surat Izin
+                        Usaha Jasa Konstruksi), ISO 9001, dan sertifikasi K3 (Keselamatan dan Kesehatan Kerja).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- CTA Section - UPDATED --}}
+    <section
+        class="relative py-20 bg-gradient-to-br from-secondary-900 via-secondary-900 to-secondary-800 overflow-hidden">
+        {{-- Background Image --}}
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-cover bg-center"
+                style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&h=1080&fit=crop');">
+            </div>
         </div>
 
         <div class="container-custom relative z-10">
-            <div class="max-w-3xl mx-auto text-center animate-fade-in">
-                <h2 class="text-3xl md:text-5xl font-heading text-white mb-4">
+            <div class="max-w-3xl mx-auto text-center text-white space-y-6 animate-fade-in">
+                <h2 class="text-3xl md:text-5xl font-heading font-semibold">
                     Siap Memulai Proyek Anda?
                 </h2>
-                <p class="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+                <p class="text-lg md:text-xl text-white/90 leading-relaxed">
                     Konsultasikan kebutuhan konstruksi Anda dengan tim profesional kami.
                     Kami siap membantu mewujudkan proyek impian Anda menjadi kenyataan.
                 </p>
 
                 {{-- CTA Buttons --}}
-                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                    @if ($company?->email)
-                        <a href="mailto:{{ $company->email }}"
-                            class="bg-primary-600 hover:bg-primary-700 text-white font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                            Konsultasi Gratis
-                        </a>
-                    @endif
-
-                    @if ($company?->whatsapp)
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $company->whatsapp) }}"
-                            target="_blank"
-                            class="border-2 border-white text-white hover:bg-white hover:text-secondary-900 font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
-                            Hubungi Kami
-                        </a>
-                    @endif
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <a href="{{ route('contact.index') }}"
+                        class="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span>Konsultasi Gratis</span>
+                    </a>
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $company->whatsapp) }}" target="_blank"
+                        class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white hover:bg-white hover:text-secondary-900 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                        <span>Hubungi Kami</span>
+                    </a>
                 </div>
 
                 {{-- Contact Info --}}
-                <div class="flex flex-col sm:flex-row gap-6 justify-center text-white/90">
-                    @if ($company?->phone)
-                        <div class="flex items-center gap-2 justify-center">
-                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                </path>
-                            </svg>
-                            <span class="font-medium">{{ $company->phone }}</span>
-                        </div>
-                    @endif
-
-                    @if ($company?->email)
-                        <div class="flex items-center gap-2 justify-center">
-                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                            <span class="font-medium">{{ $company->email }}</span>
-                        </div>
-                    @endif
+                <div class="flex flex-col sm:flex-row gap-6 justify-center text-white/90 pt-4">
+                    <div class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                        <span class="font-medium">{{ $company->phone }}</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span class="font-medium">{{ $company->email }}</span>
+                    </div>
                 </div>
             </div>
         </div>

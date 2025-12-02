@@ -64,6 +64,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('company.data') }}"
+                            class="text-white/80 hover:text-primary-400 transition-colors duration-300">
+                            Data Perusahaan
+                        </a>
+                    <li>
                         <a href="{{ route('company.profile') }}"
                             class="text-white/80 hover:text-primary-400 transition-colors duration-300">
                             Kontak

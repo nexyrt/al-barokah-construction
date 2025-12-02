@@ -3,6 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 @import 'tailwindcss';
+@import '../../vendor/tallstackui/tallstackui/css/v4.css';
+
+@plugin '@tailwindcss/forms';
+
+@source '../../vendor/tallstackui/tallstackui/**/*.php';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
@@ -189,6 +194,25 @@
     p {
         @apply text-base text-neutral-600 leading-relaxed font-sans;
     }
+}
+
+/* Infinite Scroll Animation */
+@keyframes scroll-slow {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-33.333%);
+    }
+}
+
+.animate-scroll-slow {
+    animation: scroll-slow 30s linear infinite;
+}
+
+.animate-scroll-slow:hover {
+    animation-play-state: paused;
 }
 
 /* ============================================ */

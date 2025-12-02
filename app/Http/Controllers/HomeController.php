@@ -29,9 +29,11 @@ class HomeController extends Controller
         // Get all business fields
         $businessFields = BusinessField::where('is_active', true)
             ->orderBy('display_order')
-            ->withCount(['projects' => function ($query) {
-                $query->where('is_published', true);
-            }])
+            ->withCount([
+                'projects' => function ($query) {
+                    $query->where('is_published', true);
+                }
+            ])
             ->get();
 
         // Get published testimonials
@@ -74,7 +76,7 @@ class HomeController extends Controller
         JsonLd::addValue('url', url('/'));
 
         if ($company?->logo) {
-            JsonLd::addValue('logo', asset('storage/'.$company->logo));
+            JsonLd::addValue('logo', asset('storage/' . $company->logo));
         }
 
         if ($company?->address) {
@@ -93,12 +95,23 @@ class HomeController extends Controller
             JsonLd::addValue('email', $company->email);
         }
 
+        $clients = collect([
+            ['id' => 1, 'name' => 'PT Pertamina', 'industry' => 'Oil & Gas'],
+            ['id' => 2, 'name' => 'PT PLN', 'industry' => 'Energy'],
+            ['id' => 3, 'name' => 'Bank Mandiri', 'industry' => 'Banking'],
+            ['id' => 4, 'name' => 'Telkom Indonesia', 'industry' => 'Telecommunication'],
+            ['id' => 5, 'name' => 'PT Pupuk Kaltim', 'industry' => 'Manufacturing'],
+            ['id' => 6, 'name' => 'PT Badak NGL', 'industry' => 'Gas Processing'],
+            ['id' => 7, 'name' => 'Universitas Mulawarman', 'industry' => 'Education'],
+            ['id' => 8, 'name' => 'RSUD Abdul Wahab Sjahranie', 'industry' => 'Healthcare'],
+        ]);
+
         return view('home', compact(
-            'company',
             'featuredProjects',
             'businessFields',
+            'stats',
             'testimonials',
-            'stats'
+            'clients' // tambahkan ini
         ));
     }
 }

@@ -9,15 +9,27 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+                // User harus pertama (untuk foreign key created_by di projects)
             UserSeeder::class,
+
+                // Business Fields sebelum Projects (untuk foreign key business_field_id)
             BusinessFieldSeeder::class,
+
+                // Project Tags sebelum Projects (untuk pivot table)
             ProjectTagSeeder::class,
+
+                // Projects
             ProjectSeeder::class,
+
+                // Project Galleries setelah Projects
             ProjectGallerySeeder::class,
-            ProjectTagRelationSeeder::class,
+
+                // Company Data (independent, no dependencies)
             CompanyInfoSeeder::class,
+            CompanyLegalDataSeeder::class,
             SocialMediaSeeder::class,
-            ContactMessageSeeder::class,
+
+                // Testimonials (optional foreign key ke projects)
             TestimonialSeeder::class,
         ]);
 
