@@ -424,72 +424,53 @@
                 </div>
 
                 {{-- Scroll Hint --}}
-                <p class="text-center text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-                    ← Geser untuk melihat lebih banyak →
-                </p>
+                @if (count($clients) > 3)
+                    <p class="text-center text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+                        ← Geser untuk melihat lebih banyak →
+                    </p>
+                @endif
 
                 {{-- Scrollable Container --}}
                 <div x-ref="scrollContainer" @mousedown="handleMouseDown($event)" @mouseup="handleMouseUp()"
                     @mousemove="handleMouseMove($event)" @mouseleave="handleMouseLeave()"
-                    class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 cursor-grab {{ count($clients) <= 3 ? 'justify-center' : '' }}"
+                    class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 {{ count($clients) <= 3 ? 'justify-center' : 'cursor-grab' }}"
                     style="scrollbar-width: none; -ms-overflow-style: none;">
 
-                    @foreach ($clients as $client)
+                    @forelse ($clients as $client)
                         <div class="flex-shrink-0 w-44">
-                            <div
-                                class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-5 h-36 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-md transition-shadow">
-                                @if ($client->logo && \Storage::exists($client->logo))
+                            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-5 h-36 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+                                title="{{ $client->name }}">
+                                @if ($client->logo && \Storage::disk('public')->exists($client->logo))
+                                    {{-- Logo Only --}}
                                     <img src="{{ \Storage::url($client->logo) }}" alt="{{ $client->name }}"
-                                        class="w-16 h-16 object-contain select-none" draggable="false">
+                                        class="w-full h-full object-contain select-none" draggable="false">
                                 @else
-                                    {{-- Fallback: Initials --}}
-                                    <div
-                                        class="w-16 h-16 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center">
-                                        <span class="text-primary-600 dark:text-primary-400 font-bold text-lg">
-                                            {{ \Str::of($client->name)->explode(' ')->take(2)->map(fn($word) => \Str::substr($word, 0, 1))->implode('') }}
-                                        </span>
+                                    {{-- Initials + Name --}}
+                                    <div class="flex flex-col items-center justify-center gap-3">
+                                        <div
+                                            class="w-20 h-20 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0">
+                                            <span class="text-white font-bold text-2xl">
+                                                {{ \Str::of($client->name)->explode(' ')->take(2)->map(fn($word) => \Str::substr($word, 0, 1))->implode('') }}
+                                            </span>
+                                        </div>
+                                        <p
+                                            class="text-sm font-medium text-zinc-900 dark:text-zinc-50 text-center line-clamp-2 leading-tight w-full px-2">
+                                            {{ $client->name }}
+                                        </p>
                                     </div>
                                 @endif
-                                <div class="text-center">
-                                    <p
-                                        class="text-sm font-medium text-zinc-900 dark:text-zinc-50 line-clamp-2 leading-tight">
-                                        {{ $client->name }}
-                                    </p>
-                                </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-
-            {{-- Stats --}}
-            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
-                    style="animation-delay: 0.1s;">
-                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">{{ count($clients) }}+
-                    </div>
-                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Klien Terpercaya</div>
-                </div>
-                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
-                    style="animation-delay: 0.2s;">
-                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                        {{ $stats['total_projects'] }}+</div>
-                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Proyek Selesai</div>
-                </div>
-                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
-                    style="animation-delay: 0.3s;">
-                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                        {{ $stats['years_experience'] }}+</div>
-                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Tahun Pengalaman</div>
-                </div>
-                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
-                    style="animation-delay: 0.4s;">
-                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">98%</div>
-                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Kepuasan Klien</div>
+                    @empty
+                        <div class="w-full text-center py-12">
+                            <p class="text-zinc-500 dark:text-zinc-400">Belum ada data client</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
     </section>
+
 
     {{-- FAQ Section - NEW --}}
     <section class="py-24 bg-neutral-50">
