@@ -196,6 +196,10 @@
     }
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
 /* Infinite Scroll Animation */
 @keyframes scroll-slow {
     0% {
@@ -203,7 +207,7 @@
     }
 
     100% {
-        transform: translateX(-33.333%);
+        transform: translateX(-130%);
     }
 }
 

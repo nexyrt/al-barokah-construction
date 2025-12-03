@@ -32,6 +32,11 @@
                     :current="request()->routeIs('admin.tags.*')" wire:navigate>
                     {{ __('Tags') }}
                 </flux:navlist.item>
+
+                <flux:navlist.item icon="building-office-2" :href="route('admin.clients.index')"
+                    :current="request()->routeIs('admin.clients.*')" wire:navigate>
+                    {{ __('Clients') }}
+                </flux:navlist.item>
             </flux:navlist.group>
 
             {{-- Company (Coming Soon) --}}
@@ -41,10 +46,10 @@
                     {{ __('Company Info') }}
                 </flux:navlist.item>
 
-                {{-- <flux:navlist.item icon="document-text" :href="route('admin.legal.edit')"
-                    :current="request()->routeIs('admin.legal.*')" wire:navigate>
+                <flux:navlist.item :href="route('admin.company.legal.edit')"
+                    :current="request()->routeIs('admin.company.legal.*')" wire:navigate>
                     {{ __('Legal Data') }}
-                </flux:navlist.item> --}}
+                </flux:navlist.item>
             </flux:navlist.group>
 
             {{-- Messages (Coming Soon) --}}

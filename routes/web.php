@@ -87,7 +87,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Company (Coming Soon)
     Route::get('/company', \App\Livewire\Admin\Company\ProfileEdit::class)->name('company.edit');
-    // Route::get('/legal', \App\Livewire\Admin\Legal\Edit::class)->name('legal.edit');
+    Route::get('/company/legal', \App\Livewire\Admin\Company\LegalEdit::class)->name('company.legal.edit');
+
+    // Clients
+    Route::get('/clients', \App\Livewire\Admin\Clients\Index::class)->name('clients.index');
 
     // Messages (Coming Soon)
     // Route::get('/messages', \App\Livewire\Admin\Messages\Index::class)->name('messages.index');

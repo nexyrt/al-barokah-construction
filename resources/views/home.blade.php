@@ -370,109 +370,122 @@
         </div>
     </section>
 
-    {{-- Clients Section - FIXED --}}
-    <section class="py-24 bg-white overflow-hidden">
+    {{-- Clients Section dengan Drag Scroll --}}
+    <section class="py-24 bg-zinc-50 dark:bg-zinc-900/30" x-data="{
+        isDragging: false,
+        startX: 0,
+        scrollLeft: 0,
+        handleMouseDown(e) {
+            const container = $refs.scrollContainer;
+            this.isDragging = true;
+            this.startX = e.pageX - container.offsetLeft;
+            this.scrollLeft = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        },
+        handleMouseUp() {
+            this.isDragging = false;
+            $refs.scrollContainer.style.cursor = 'grab';
+        },
+        handleMouseMove(e) {
+            if (!this.isDragging) return;
+            e.preventDefault();
+            const container = $refs.scrollContainer;
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - this.startX) * 2;
+            container.scrollLeft = this.scrollLeft - walk;
+        },
+        handleMouseLeave() {
+            this.isDragging = false;
+            $refs.scrollContainer.style.cursor = 'grab';
+        }
+    }">
         <div class="container-custom">
-            {{-- Section Header --}}
-            <div class="text-center mb-16 animate-fade-in">
-                <span class="text-primary-600 font-semibold tracking-wider uppercase text-sm">
+            {{-- Header --}}
+            <div class="text-center mb-12 animate-fade-in">
+                <span class="text-primary-600 dark:text-primary-400 font-semibold tracking-wider uppercase text-sm">
                     Kepercayaan
                 </span>
-                <h2 class="text-4xl md:text-5xl font-heading text-secondary-900 mt-2 mb-4">
+                <h2 class="text-4xl md:text-5xl font-heading text-zinc-900 dark:text-zinc-50 mt-2 mb-4">
                     CLIENT KAMI
                 </h2>
-                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">
+                <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
                     Dipercaya oleh perusahaan dan institusi terkemuka di Kalimantan Timur
                 </p>
             </div>
 
-            {{-- Infinite Scrolling Logos --}}
+            {{-- Draggable Client Logos --}}
             <div class="relative">
                 {{-- Gradient Overlays --}}
-                <div class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-                <div class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10">
+                <div
+                    class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-zinc-50 dark:from-zinc-900/30 to-transparent z-10 pointer-events-none">
+                </div>
+                <div
+                    class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-zinc-50 dark:from-zinc-900/30 to-transparent z-10 pointer-events-none">
                 </div>
 
-                <div class="overflow-hidden">
-                    <div class="flex animate-scroll-slow gap-8">
-                        {{-- First Set --}}
-                        @foreach ($clients as $client)
-                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
-                                <div
-                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
-                                    <div
-                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
-                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
-                                            {{ $client['name'] }}
-                                        </p>
-                                        <p class="text-xs text-neutral-500 mt-1">
-                                            {{ $client['industry'] }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                {{-- Scroll Hint --}}
+                <p class="text-center text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+                    ← Geser untuk melihat lebih banyak →
+                </p>
 
-                        {{-- Second Set (Duplicate) --}}
-                        @foreach ($clients as $client)
-                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
-                                <div
-                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
-                                    <div
-                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
-                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
-                                            {{ $client['name'] }}
-                                        </p>
-                                        <p class="text-xs text-neutral-500 mt-1">
-                                            {{ $client['industry'] }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                {{-- Scrollable Container --}}
+                <div x-ref="scrollContainer" @mousedown="handleMouseDown($event)" @mouseup="handleMouseUp()"
+                    @mousemove="handleMouseMove($event)" @mouseleave="handleMouseLeave()"
+                    class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 cursor-grab {{ count($clients) <= 3 ? 'justify-center' : '' }}"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
 
-                        {{-- Third Set (Duplicate) --}}
-                        @foreach ($clients as $client)
-                            <div class="flex-shrink-0 w-48 h-32 flex items-center justify-center group">
-                                <div
-                                    class="relative w-full h-full rounded-lg border-2 border-neutral-200 bg-white p-6 flex flex-col items-center justify-center gap-3 transition-all hover:shadow-lg hover:border-primary-600 hover:scale-105">
+                    @foreach ($clients as $client)
+                        <div class="flex-shrink-0 w-44">
+                            <div
+                                class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-5 h-36 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                                @if ($client->logo && \Storage::exists($client->logo))
+                                    <img src="{{ \Storage::url($client->logo) }}" alt="{{ $client->name }}"
+                                        class="w-16 h-16 object-contain select-none" draggable="false">
+                                @else
+                                    {{-- Fallback: Initials --}}
                                     <div
-                                        class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center group-hover:from-primary-200 group-hover:to-primary-100 transition-all">
-                                        <svg class="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                                            </path>
-                                        </svg>
+                                        class="w-16 h-16 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center">
+                                        <span class="text-primary-600 dark:text-primary-400 font-bold text-lg">
+                                            {{ \Str::of($client->name)->explode(' ')->take(2)->map(fn($word) => \Str::substr($word, 0, 1))->implode('') }}
+                                        </span>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm font-semibold text-secondary-900 line-clamp-2">
-                                            {{ $client['name'] }}
-                                        </p>
-                                        <p class="text-xs text-neutral-500 mt-1">
-                                            {{ $client['industry'] }}
-                                        </p>
-                                    </div>
+                                @endif
+                                <div class="text-center">
+                                    <p
+                                        class="text-sm font-medium text-zinc-900 dark:text-zinc-50 line-clamp-2 leading-tight">
+                                        {{ $client->name }}
+                                    </p>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Stats --}}
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
+                    style="animation-delay: 0.1s;">
+                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">{{ count($clients) }}+
                     </div>
+                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Klien Terpercaya</div>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
+                    style="animation-delay: 0.2s;">
+                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                        {{ $stats['total_projects'] }}+</div>
+                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Proyek Selesai</div>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
+                    style="animation-delay: 0.3s;">
+                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                        {{ $stats['years_experience'] }}+</div>
+                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Tahun Pengalaman</div>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm animate-fade-in"
+                    style="animation-delay: 0.4s;">
+                    <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">98%</div>
+                    <div class="text-sm text-zinc-600 dark:text-zinc-400">Kepuasan Klien</div>
                 </div>
             </div>
         </div>

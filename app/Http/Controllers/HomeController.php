@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BusinessField;
+use App\Models\Client;
 use App\Models\CompanyInfo;
 use App\Models\Project;
 use App\Models\Testimonial;
@@ -69,7 +70,7 @@ class HomeController extends Controller
         TwitterCard::setTitle($company?->company_name ?? 'Al Barokah Construction');
         TwitterCard::setDescription($company?->tagline ?? 'Membangun Masa Depan Bersama');
 
-        // JSON-LD Schema - FIXED
+        // JSON-LD Schema
         JsonLd::setType('Organization');
         JsonLd::setTitle($company?->company_name ?? 'PT Konstruksi Bangun Sejahtera');
         JsonLd::setDescription($company?->about_us ?? 'Perusahaan konstruksi terpercaya');
@@ -95,23 +96,15 @@ class HomeController extends Controller
             JsonLd::addValue('email', $company->email);
         }
 
-        $clients = collect([
-            ['id' => 1, 'name' => 'PT Pertamina', 'industry' => 'Oil & Gas'],
-            ['id' => 2, 'name' => 'PT PLN', 'industry' => 'Energy'],
-            ['id' => 3, 'name' => 'Bank Mandiri', 'industry' => 'Banking'],
-            ['id' => 4, 'name' => 'Telkom Indonesia', 'industry' => 'Telecommunication'],
-            ['id' => 5, 'name' => 'PT Pupuk Kaltim', 'industry' => 'Manufacturing'],
-            ['id' => 6, 'name' => 'PT Badak NGL', 'industry' => 'Gas Processing'],
-            ['id' => 7, 'name' => 'Universitas Mulawarman', 'industry' => 'Education'],
-            ['id' => 8, 'name' => 'RSUD Abdul Wahab Sjahranie', 'industry' => 'Healthcare'],
-        ]);
+        // Get active clients from database (ordered by display_order)
+        $clients = Client::active()->ordered()->get();
 
         return view('home', compact(
             'featuredProjects',
             'businessFields',
             'stats',
             'testimonials',
-            'clients' // tambahkan ini
+            'clients'
         ));
     }
-}
+}                                                                                                                                                   
