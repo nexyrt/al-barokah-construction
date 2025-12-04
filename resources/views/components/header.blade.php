@@ -1,8 +1,9 @@
 {{-- Top Bar - Contact Info --}}
-<div class="bg-secondary-900 text-white py-2 text-sm">
+{{-- <div class="bg-secondary-900 text-white py-2 text-sm">
     <div class="container-custom">
         <div class="flex flex-col md:flex-row items-center justify-between gap-2">
-            {{-- Left: Contact Info --}}
+            
+            
             <div class="flex flex-wrap items-center gap-4 md:gap-6">
                 <a href="tel:{{ $company->phone ?? '0541123456' }}"
                     class="flex items-center gap-2 hover:text-primary-400 transition-colors">
@@ -24,7 +25,8 @@
                 </a>
             </div>
 
-            {{-- Right: Operating Hours & Social Media --}}
+            
+            
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex items-center gap-2 text-white/80">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +38,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 {{-- Main Navigation - CHANGED TO STICKY --}}
 <nav class="sticky top-0 bg-white/95 backdrop-blur-sm z-50 border-b border-neutral-200 shadow-sm"

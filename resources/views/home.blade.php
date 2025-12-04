@@ -36,7 +36,7 @@
                     <div class="container-custom">
                         <div class="max-w-4xl">
                             {{-- Badge --}}
-                            <div
+                            {{-- <div
                                 class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600/30 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
                                 <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
                                 </svg>
                                 <span
                                     class="text-primary-300 font-semibold text-sm">{{ $project->businessField->name }}</span>
-                            </div>
+                            </div> --}}
 
                             {{-- Title --}}
                             <h1 class="text-4xl md:text-6xl font-heading mb-4 leading-tight text-white">
