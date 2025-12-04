@@ -1,3 +1,3 @@
-<div class="flex aspect-square size-16 items-center justify-center rounded-md ">
+<div class="flex aspect-square size-6 items-center justify-center rounded-md ">
     <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
 </div>
