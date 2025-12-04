@@ -1,7 +1,7 @@
 <x-layouts.public>
 
-    {{-- Hero Slideshow Section - FIXED: Added mt-20 --}}
-    <section x-data="heroSlideshow()" x-init="totalSlides = {{ $featuredProjects->take(3)->count() }}" class="relative h-[600px] md:h-[700px]">
+    {{-- Hero Slideshow Section - Responsive --}}
+    <section x-data="heroSlideshow()" x-init="totalSlides = {{ $featuredProjects->take(3)->count() }}" class="relative h-[500px] sm:h-[600px] md:h-[700px]">
 
         @foreach ($featuredProjects->take(3) as $index => $project)
             <div x-show="currentSlide === {{ $index }}" x-transition:enter="transition-opacity duration-1000"
@@ -17,7 +17,7 @@
                         class="absolute inset-0 bg-gradient-to-br from-secondary-900 via-secondary-800/90 to-secondary-900/70 z-10">
                     </div>
 
-                    {{-- Background Image or Gradient --}}
+                    {{-- Background Image --}}
                     @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
                         <div class="absolute inset-0 bg-cover bg-center opacity-20"
                             style="background-image: url('{{ $project->thumbnail }}');"></div>
@@ -33,64 +33,57 @@
 
                 {{-- Content --}}
                 <div class="relative z-20 h-full flex items-center">
-                    <div class="container-custom">
+                    <div class="container-custom px-4 sm:px-6">
                         <div class="max-w-4xl">
-                            {{-- Badge --}}
-                            {{-- <div
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600/30 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
-                                <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                                    </path>
-                                </svg>
-                                <span
-                                    class="text-primary-300 font-semibold text-sm">{{ $project->businessField->name }}</span>
-                            </div> --}}
-
                             {{-- Title --}}
-                            <h1 class="text-4xl md:text-6xl font-heading mb-4 leading-tight text-white">
+                            <h1
+                                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading mb-3 sm:mb-4 leading-tight text-white">
                                 {{ $project->title }}
                             </h1>
 
                             {{-- Description --}}
-                            <p class="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl">
+                            <p
+                                class="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl">
                                 {{ Str::limit($project->description, 150) }}
                             </p>
 
                             {{-- Meta Info --}}
-                            <div class="flex flex-wrap gap-4 mb-8">
-                                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                                    <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                            <div class="flex flex-wrap gap-2 sm:gap-4 mb-6 sm:mb-8">
+                                <div
+                                    class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-primary-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
                                         </path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
-                                    <span class="text-white text-sm">{{ $project->location }}</span>
+                                    <span class="text-white text-xs sm:text-sm">{{ $project->location }}</span>
                                 </div>
-                                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                                    <span class="text-white text-sm">
+                                <div
+                                    class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg">
+                                    <span class="text-white text-xs sm:text-sm">
                                         {{ $project->status === 'completed' ? '✅ Selesai' : ($project->status === 'ongoing' ? '🔄 Dalam Pengerjaan' : '📋 Perencanaan') }}
                                     </span>
                                 </div>
                             </div>
 
                             {{-- CTA Buttons --}}
-                            <div class="flex flex-wrap gap-4">
+                            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                 <a href="{{ route('projects.index') }}"
-                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-8 py-4 rounded-lg inline-flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base">
                                     <span>Lihat Portofolio</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </a>
                                 <a href="{{ route('contact.index') }}"
-                                    class="bg-white/10 backdrop-blur-sm border-2 border-white hover:bg-white hover:text-secondary-900 text-white font-semibold px-8 py-4 rounded-lg inline-flex items-center gap-2 transition-all duration-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    class="bg-white/10 backdrop-blur-sm border-2 border-white hover:bg-white hover:text-secondary-900 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg inline-flex items-center justify-center gap-2 transition-all duration-300 text-sm sm:text-base">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                                         </path>
@@ -104,28 +97,28 @@
             </div>
         @endforeach
 
-        {{-- Navigation Arrows --}}
+        {{-- Navigation Arrows - Hidden on mobile, visible on tablet+ --}}
         <button @click="prevSlide()"
-            class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group">
-            <svg class="w-6 h-6 text-white group-hover:-translate-x-1 transition-transform" fill="none"
+            class="hidden md:flex absolute left-2 lg:left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 lg:w-12 lg:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full items-center justify-center transition-all duration-300 group">
+            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover:-translate-x-1 transition-transform" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
         </button>
         <button @click="nextSlide()"
-            class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group">
-            <svg class="w-6 h-6 text-white group-hover:translate-x-1 transition-transform" fill="none"
+            class="hidden md:flex absolute right-2 lg:right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 lg:w-12 lg:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full items-center justify-center transition-all duration-300 group">
+            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-white group-hover:translate-x-1 transition-transform" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
         </button>
 
         {{-- Dot Indicators --}}
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+        <div class="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
             @foreach ($featuredProjects->take(3) as $index => $project)
                 <button @click="goToSlide({{ $index }})"
-                    :class="currentSlide === {{ $index }} ? 'bg-primary-600 w-8' : 'bg-white/50 w-3'"
-                    class="h-3 rounded-full transition-all duration-300">
+                    :class="currentSlide === {{ $index }} ? 'bg-primary-600 w-6 sm:w-8' : 'bg-white/50 w-2.5 sm:w-3'"
+                    class="h-2.5 sm:h-3 rounded-full transition-all duration-300">
                 </button>
             @endforeach
         </div>
@@ -154,8 +147,7 @@
                 <div class="text-center group animate-fade-in" style="animation-delay: 0.1s;">
                     <div
                         class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-success-500" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                             </path>
