@@ -8,6 +8,10 @@
 
     {!! SEO::generate() !!}
 
+    <link rel="icon" href="/icon.png" sizes="any">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
