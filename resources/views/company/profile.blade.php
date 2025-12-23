@@ -281,7 +281,6 @@
                         <h3 class="font-semibold text-lg text-secondary-900">Alamat Kantor</h3>
                         <p class="text-neutral-700">
                             {{ $company->address ?? 'Jl. Soekarno Hatta No. 123' }}<br />
-                            {{ $company->city ?? 'Samarinda' }}, {{ $company->province ?? 'Kalimantan Timur' }}
                         </p>
                     </div>
 
@@ -294,9 +293,6 @@
                                 <p>WhatsApp: {{ $company->whatsapp }}</p>
                             @endif
                             <p>Email: {{ $company->email ?? 'info@albarokah.co.id' }}</p>
-                            @if ($company?->website)
-                                <p>Website: {{ $company->website }}</p>
-                            @endif
                         </div>
                     </div>
 

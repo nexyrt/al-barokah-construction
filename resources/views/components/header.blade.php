@@ -1,8 +1,9 @@
 {{-- Top Bar - Contact Info --}}
-<div class="bg-secondary-900 text-white py-2 text-sm">
+{{-- <div class="bg-secondary-900 text-white py-2 text-sm">
     <div class="container-custom">
         <div class="flex flex-col md:flex-row items-center justify-between gap-2">
-            {{-- Left: Contact Info --}}
+            
+            
             <div class="flex flex-wrap items-center gap-4 md:gap-6">
                 <a href="tel:{{ $company->phone ?? '0541123456' }}"
                     class="flex items-center gap-2 hover:text-primary-400 transition-colors">
@@ -24,7 +25,8 @@
                 </a>
             </div>
 
-            {{-- Right: Operating Hours & Social Media --}}
+            
+            
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex items-center gap-2 text-white/80">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,22 +35,10 @@
                     </svg>
                     <span class="text-xs">{{ $company->operating_hours ?? 'Senin - Jumat: 08:00 - 17:00' }}</span>
                 </div>
-
-                @if ($socialMedia && $socialMedia->count() > 0)
-                    <div class="flex items-center gap-2">
-                        @foreach ($socialMedia->take(4) as $social)
-                            <a href="{{ $social->url }}" target="_blank" rel="noopener noreferrer"
-                                class="w-7 h-7 bg-white/10 hover:bg-primary-600 rounded-full flex items-center justify-center transition-all duration-300"
-                                aria-label="{{ $social->platform }}">
-                                <i class="{{ $iconMap[$social->icon] ?? 'fas fa-share-alt' }} text-white text-xs"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                @endif
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 {{-- Main Navigation - CHANGED TO STICKY --}}
 <nav class="sticky top-0 bg-white/95 backdrop-blur-sm z-50 border-b border-neutral-200 shadow-sm"

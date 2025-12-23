@@ -123,45 +123,7 @@
 
             {{-- Social Media --}}
             <div>
-                <h4 class="font-heading text-lg mb-4 text-primary-400">Ikuti Kami</h4>
-
-                @if ($socialMedia->count() > 0)
-                    <div class="flex gap-3 mb-4 flex-wrap">
-                        @foreach ($socialMedia as $social)
-                            <a href="{{ $social->url }}" target="_blank" rel="noopener noreferrer"
-                                class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary-600 hover:scale-110 transition-all duration-300"
-                                aria-label="{{ $social->platform }}">
-                                <i class="{{ $iconMap[$social->icon] ?? 'fas fa-share-alt' }} text-white"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                @else
-                    {{-- Fallback jika tidak ada data di database --}}
-                    <div class="flex gap-3 mb-4">
-                        <a href="https://facebook.com/konstruksibanguns" target="_blank" rel="noopener noreferrer"
-                            class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary-600 hover:scale-110 transition-all duration-300"
-                            aria-label="Facebook">
-                            <i class="fab fa-facebook-f text-white"></i>
-                        </a>
-                        <a href="https://instagram.com/konstruksibanguns" target="_blank" rel="noopener noreferrer"
-                            class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary-600 hover:scale-110 transition-all duration-300"
-                            aria-label="Instagram">
-                            <i class="fab fa-instagram text-white"></i>
-                        </a>
-                        <a href="https://linkedin.com/company/konstruksibanguns" target="_blank"
-                            rel="noopener noreferrer"
-                            class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary-600 hover:scale-110 transition-all duration-300"
-                            aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in text-white"></i>
-                        </a>
-                        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
-                            class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary-600 hover:scale-110 transition-all duration-300"
-                            aria-label="WhatsApp">
-                            <i class="fab fa-whatsapp text-white"></i>
-                        </a>
-                    </div>
-                @endif
-
+                <h4 class="font-heading text-lg mb-4 text-primary-400">Jadwal Kantor Kami</h4>
                 @if ($company?->operating_hours)
                     <p class="text-sm text-white/70">
                         {{ $company->operating_hours }}
@@ -175,11 +137,11 @@
         </div>
 
         {{-- Bottom Footer --}}
-        <div class="border-t border-white/20 pt-8 text-center text-white/60">
-            <p>&copy; {{ date('Y') }} {{ $company->company_name ?? 'Al Barokah Construction' }}. Semua hak
-                dilindungi undang-undang.</p>
+        <div class="border-t pt-8 text-center !text-white">
+            <p class="!text-white">&copy; {{ date('Y') }}
+                {{ $company->company_name ?? 'Al Barokah Construction' }}. Semua hak dilindungi undang-undang.</p>
             @if ($company?->city && $company?->province)
-                <p class="text-sm mt-2">{{ $company->city }}, {{ $company->province }}, Indonesia</p>
+                <p class="text-sm mt-2 !text-white">{{ $company->city }}, {{ $company->province }}, Indonesia</p>
             @endif
         </div>
     </div>

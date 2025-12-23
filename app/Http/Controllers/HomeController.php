@@ -100,6 +100,7 @@ class HomeController extends Controller
         $clients = Client::active()->ordered()->get();
 
         return view('home', compact(
+            'company',           // ✅ FIXED: Added $company
             'featuredProjects',
             'businessFields',
             'stats',
@@ -107,4 +108,4 @@ class HomeController extends Controller
             'clients'
         ));
     }
-}                                                                                                                                                   
+}
