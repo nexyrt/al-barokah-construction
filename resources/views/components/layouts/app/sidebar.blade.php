@@ -52,19 +52,16 @@
                 </flux:navlist.item>
             </flux:navlist.group>
 
-            {{-- Messages (Coming Soon) --}}
-            {{-- <flux:navlist.group :heading="__('Communication')" class="grid">
-        <flux:navlist.item 
-            icon="envelope" 
-            :href="route('admin.messages.index')"
-            :current="request()->routeIs('admin.messages.*')" 
-            wire:navigate>
-            {{ __('Messages') }}
-            @if ($unreadCount = \App\Models\ContactMessage::where('is_read', false)->count())
-                <flux:badge size="sm" color="red">{{ $unreadCount }}</flux:badge>
-            @endif
-        </flux:navlist.item>
-    </flux:navlist.group> --}}
+            {{-- Messages --}}
+            <flux:navlist.group :heading="__('Communication')" class="grid">
+                <flux:navlist.item icon="envelope" :href="route('admin.messages.index')"
+                    :current="request()->routeIs('admin.messages.*')" wire:navigate>
+                    {{ __('Messages') }}
+                    @if ($unreadCount = \App\Models\ContactMessage::where('is_read', false)->count())
+                        <flux:badge size="sm" color="red">{{ $unreadCount }}</flux:badge>
+                    @endif
+                </flux:navlist.item>
+            </flux:navlist.group>
 
             {{-- Users (Coming Soon) --}}
             {{-- <flux:navlist.group :heading="__('System')" class="grid">

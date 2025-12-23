@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CompanyInfo;
+use App\Models\ContactMessage;
 use App\Models\SocialMedia;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -44,15 +45,14 @@ class ContactController extends Controller
     public function submit(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
             'phone' => 'required|string|max:20',
-            'subject' => 'required|string|max:255',
+            'subject' => 'required|string|max:200',
             'message' => 'required|string|max:2000',
         ]);
 
-        // TODO: Simpan ke database atau kirim email
-        // Untuk sekarang, hanya redirect dengan success message
+        ContactMessage::create($validated);
 
         return back()->with('success', 'Terima kasih! Pesan Anda telah terkirim. Tim kami akan segera menghubungi Anda.');
     }

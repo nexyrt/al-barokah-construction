@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(grep:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(php artisan make:model:*)",
+      "Bash(rm:*)",
+      "Bash(php artisan migrate:status:*)",
+      "Bash(findstr:*)",
+      "Bash(php artisan:*)"
     ]
   }
 }
