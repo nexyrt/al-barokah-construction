@@ -245,112 +245,135 @@
                     </div>
                 @endif
 
-                {{-- TWO COLUMN LAYOUT - Periode/Nilai/Luas + Deskripsi --}}
-                <div class="grid lg:grid-cols-3 gap-8">
-
-                    {{-- LEFT: Project Stats (1/3) --}}
-                    <div class="lg:col-span-1 space-y-6">
-                        <h2 class="text-xl font-heading font-bold text-secondary-900 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                </path>
-                            </svg>
-                            Informasi Proyek
-                        </h2>
-
-                        {{-- Periode --}}
-                        <div
-                            class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-primary-600 hover:shadow-md transition-all duration-300">
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                {{-- PROJECT INFO TABLE --}}
+                <div class="space-y-8">
+                    {{-- Informasi Proyek Table --}}
+                    <div class="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4">
+                            <h2 class="text-xl font-heading font-bold text-white flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                     </path>
                                 </svg>
-                                <span class="text-xs font-semibold text-neutral-500 uppercase">Periode</span>
-                            </div>
-                            <p class="font-bold text-secondary-900">
-                                {{ \Carbon\Carbon::parse($project->start_date)->translatedFormat('F Y') }}</p>
-                            @if ($project->end_date)
-                                <p class="text-sm text-neutral-600 mt-1">s/d
-                                    {{ \Carbon\Carbon::parse($project->end_date)->translatedFormat('F Y') }}</p>
-                            @else
-                                <p class="text-sm text-info-600 font-medium mt-1">Sedang Berjalan</p>
-                            @endif
+                                Informasi Proyek
+                            </h2>
                         </div>
 
-                        {{-- Durasi --}}
-                        @if ($project->duration_months)
-                            <div
-                                class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-primary-600 hover:shadow-md transition-all duration-300">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <svg class="w-5 h-5 text-info-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span class="text-xs font-semibold text-neutral-500 uppercase">Durasi</span>
-                                </div>
-                                <p class="text-2xl font-bold text-secondary-900">{{ $project->duration_months }}</p>
-                                <p class="text-sm text-neutral-600">Bulan</p>
-                            </div>
-                        @endif
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <tbody class="divide-y divide-neutral-200">
+                                    {{-- Periode --}}
+                                    <tr class="hover:bg-neutral-50 transition-colors">
+                                        <td class="px-6 py-4 w-1/3">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                                <span class="font-semibold text-neutral-700">Periode</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div>
+                                                <p class="font-bold text-secondary-900">
+                                                    {{ \Carbon\Carbon::parse($project->start_date)->translatedFormat('F Y') }}
+                                                    @if ($project->end_date)
+                                                        - {{ \Carbon\Carbon::parse($project->end_date)->translatedFormat('F Y') }}
+                                                    @else
+                                                        <span class="text-info-600 font-semibold ml-2">(Sedang Berjalan)</span>
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                        {{-- Nilai Proyek --}}
-                        @if ($project->project_value)
-                            <div
-                                class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-primary-600 hover:shadow-md transition-all duration-300">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-xs font-semibold text-neutral-500 uppercase">Nilai Proyek</span>
-                                </div>
-                                <p class="text-lg font-bold text-secondary-900">Rp
-                                    {{ number_format($project->project_value, 0, ',', '.') }}</p>
-                            </div>
-                        @endif
+                                    {{-- Durasi --}}
+                                    @if ($project->duration_months)
+                                        <tr class="hover:bg-neutral-50 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 bg-info-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                        <svg class="w-5 h-5 text-info-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="font-semibold text-neutral-700">Durasi</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <p class="font-bold text-secondary-900">{{ $project->duration_months }} Bulan</p>
+                                            </td>
+                                        </tr>
+                                    @endif
 
-                        {{-- Luas Area --}}
-                        @if ($project->area_size)
-                            <div
-                                class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-primary-600 hover:shadow-md transition-all duration-300">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <svg class="w-5 h-5 text-warning-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4">
-                                        </path>
-                                    </svg>
-                                    <span class="text-xs font-semibold text-neutral-500 uppercase">Luas Area</span>
-                                </div>
-                                <p class="text-2xl font-bold text-secondary-900">{{ $project->area_size }}</p>
-                            </div>
-                        @endif
+                                    {{-- Nilai Proyek --}}
+                                    @if ($project->project_value)
+                                        <tr class="hover:bg-neutral-50 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                        <svg class="w-5 h-5 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="font-semibold text-neutral-700">Nilai Proyek</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <p class="font-bold text-secondary-900 text-lg">Rp {{ number_format($project->project_value, 0, ',', '.') }}</p>
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                    {{-- Luas Area --}}
+                                    @if ($project->area_size)
+                                        <tr class="hover:bg-neutral-50 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 bg-warning-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                        <svg class="w-5 h-5 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="font-semibold text-neutral-700">Luas Area</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <p class="font-bold text-secondary-900 text-lg">{{ $project->area_size }}</p>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    {{-- RIGHT: Description (2/3) --}}
-                    <div class="lg:col-span-2">
-                        <div
-                            class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 hover:border-primary-600 hover:shadow-md transition-all duration-300">
-                            <h2 class="text-xl font-heading font-bold text-secondary-900 mb-4 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                    {{-- Deskripsi Proyek --}}
+                    <div class="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4">
+                            <h2 class="text-xl font-heading font-bold text-white flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                     </path>
                                 </svg>
                                 Deskripsi Proyek
                             </h2>
+                        </div>
+                        <div class="px-6 py-6">
                             <div class="prose prose-neutral max-w-none">
                                 <p class="text-neutral-700 leading-relaxed whitespace-pre-line">
-                                    {{ $project->description }}</p>
+                                    {{ $project->description }}
+                                </p>
                             </div>
                         </div>
                     </div>

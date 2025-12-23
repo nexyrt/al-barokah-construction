@@ -12,23 +12,24 @@
 
                 {{-- Background Layers --}}
                 <div class="absolute inset-0">
-                    {{-- Gradient Overlay --}}
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-secondary-900 via-secondary-800/90 to-secondary-900/70 z-10">
-                    </div>
-
                     {{-- Background Image or Gradient --}}
                     @if ($project->thumbnail && filter_var($project->thumbnail, FILTER_VALIDATE_URL))
-                        <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                        <div class="absolute inset-0 bg-cover bg-center"
                             style="background-image: url('{{ $project->thumbnail }}');"></div>
                     @elseif($project->thumbnail)
-                        <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                        <div class="absolute inset-0 bg-cover bg-center"
                             style="background-image: url('{{ asset('storage/' . $project->thumbnail) }}');"></div>
                     @else
                         <div
-                            class="absolute inset-0 bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700 opacity-20">
+                            class="absolute inset-0 bg-gradient-to-br from-primary-400 via-primary-600 to-secondary-700">
                         </div>
                     @endif
+
+                    {{-- Multi-layer Gradient Overlay for better text readability --}}
+                    <div class="absolute inset-0 bg-gradient-to-r from-secondary-900/80 via-secondary-900/50 to-secondary-900/30 z-10">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-secondary-900/60 via-transparent to-transparent z-10">
+                    </div>
                 </div>
 
                 {{-- Content --}}
@@ -185,7 +186,7 @@
                 <div class="text-center group animate-fade-in" style="animation-delay: 0.3s;">
                     <div
                         class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-8 h-8 text-info-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                             </path>
@@ -301,7 +302,7 @@
 
                             {{-- Overlay --}}
                             <div
-                                class="absolute inset-0 bg-secondary-900/80 group-hover:bg-secondary-900/60 transition-all duration-300 flex items-center justify-center p-6">
+                                class="absolute inset-0 bg-secondary-900/40 group-hover:bg-secondary-900/30 transition-all duration-300 flex items-center justify-center p-6">
                                 <div class="text-center text-white">
                                     <span
                                         class="inline-block bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
