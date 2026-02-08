@@ -4,11 +4,125 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\CompanyLegalData;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CompanyLegalDataSeeder extends Seeder
 {
+    /**
+     * Generate and save avatar image locally using PHP GD
+     */
+    private function generateAvatar(string $name, string $filename): string
+    {
+        // Create directory if not exists
+        if (!Storage::disk('public')->exists('team')) {
+            Storage::disk('public')->makeDirectory('team');
+        }
+
+        $path = 'team/' . $filename;
+        $fullPath = storage_path('app/public/' . $path);
+
+        // Skip if file already exists
+        if (file_exists($fullPath)) {
+            $this->command->info("✓ Avatar already exists: {$filename}");
+            return $path;
+        }
+
+        $initials = $this->getInitials($name);
+
+        // Generate random background color
+        $colors = [
+            [22, 163, 74],   // Green
+            [37, 99, 235],   // Blue
+            [234, 88, 12],   // Orange
+            [168, 85, 247],  // Purple
+            [236, 72, 153],  // Pink
+            [14, 165, 233],  // Sky
+            [234, 179, 8],   // Yellow
+            [239, 68, 68],   // Red
+        ];
+        $bgColor = $colors[array_rand($colors)];
+
+        try {
+            // Create image with GD
+            $width = 512;
+            $height = 512;
+            $image = imagecreatetruecolor($width, $height);
+
+            // Allocate colors
+            $backgroundColor = imagecolorallocate($image, $bgColor[0], $bgColor[1], $bgColor[2]);
+            $textColor = imagecolorallocate($image, 255, 255, 255);
+
+            // Fill background
+            imagefill($image, 0, 0, $backgroundColor);
+
+            // Add text (initials) - using built-in font
+            $fontSize = 5; // GD built-in font size (1-5)
+            $textWidth = imagefontwidth($fontSize) * strlen($initials);
+            $textHeight = imagefontheight($fontSize);
+            $x = ($width - $textWidth) / 2;
+            $y = ($height - $textHeight) / 2;
+
+            // Draw text multiple times for bold effect
+            for ($i = 0; $i < 3; $i++) {
+                imagestring($image, $fontSize, $x + $i, $y, $initials, $textColor);
+                imagestring($image, $fontSize, $x, $y + $i, $initials, $textColor);
+            }
+
+            // Save as JPEG
+            imagejpeg($image, $fullPath, 90);
+            imagedestroy($image);
+
+            $this->command->info("✓ Generated avatar: {$filename} ({$initials})");
+        } catch (\Exception $e) {
+            $this->command->warn("⚠ Error generating avatar: " . $e->getMessage());
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get initials from full name
+     */
+    private function getInitials(string $name): string
+    {
+        // Remove titles (H., Ir., Dra., S.E., M.M., M.T., etc.)
+        $cleanName = preg_replace('/\b(H\.|Ir\.|Dra?\.|S\.[A-Z]+|M\.[A-Z]+|Prof\.|Dr\.)\s*/i', '', $name);
+
+        $words = explode(' ', trim($cleanName));
+        $initials = '';
+
+        foreach ($words as $word) {
+            if (!empty($word)) {
+                $initials .= mb_substr($word, 0, 1);
+            }
+        }
+
+        return mb_strtoupper(mb_substr($initials, 0, 2)); // Max 2 letters
+    }
+
     public function run(): void
     {
+        $this->command->info('Generating team avatars...');
+
+        // Define team members with their photos
+        $teamMembers = [
+            ['name' => 'H. Ahmad Fauzi, S.E., M.M.', 'file' => 'komisaris-utama.jpg'],
+            ['name' => 'Ir. Budi Santoso, M.T.', 'file' => 'komisaris.jpg'],
+            ['name' => 'Ir. Soekarno, M.T.', 'file' => 'direktur-utama.jpg'],
+            ['name' => 'Dra. Siti Nurhaliza, M.M.', 'file' => 'direktur-keuangan.jpg'],
+            ['name' => 'Ir. Bambang Suryadi, M.Sc.', 'file' => 'direktur-ops.jpg'],
+            ['name' => 'Ir. Hendra Wijaya, M.T.', 'file' => 'gm.jpg'],
+            ['name' => 'Drs. Agus Salim, M.M.', 'file' => 'manager-hrd.jpg'],
+            ['name' => 'Ir. Dewi Lestari, M.T.', 'file' => 'manager-engineering.jpg'],
+            ['name' => 'S.T. Eko Prasetyo', 'file' => 'manager-project.jpg'],
+        ];
+
+        // Generate all avatars
+        foreach ($teamMembers as $member) {
+            $this->generateAvatar($member['name'], $member['file']);
+        }
         CompanyLegalData::create([
             'nib' => '1234567890123456',
             'siujk' => '1-2345-6-12-3-4567890',

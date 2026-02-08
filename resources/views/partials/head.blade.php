@@ -3,7 +3,6 @@
 
 <title>{{ $title ?? config('app.name') }}</title>
 
-<link rel="icon" href="/icon.png" sizes="any">
 <link rel="icon" href="/icon.png" type="image/png">
 <link rel="apple-touch-icon" href="/icon.png">
 

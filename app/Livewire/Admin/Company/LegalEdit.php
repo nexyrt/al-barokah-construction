@@ -111,10 +111,13 @@ class LegalEdit extends Component
 
     public function addCertification(): void
     {
-        if (empty($this->newCertification['name']) || empty($this->newCertification['number'])) {
-            $this->error('Validation Failed', 'Name and number are required');
+        if (empty($this->newCertification['name']) || empty($this->newCertification['number']) || empty($this->newCertification['type'])) {
+            $this->error('Validation Failed', 'Name, type, and number are required');
             return;
         }
+
+        // Clean up type: trim whitespace and capitalize first letter
+        $this->newCertification['type'] = ucfirst(trim($this->newCertification['type']));
 
         $this->certifications[] = $this->newCertification;
         $this->newCertification = ['type' => '', 'name' => '', 'number' => '', 'issued_by' => '', 'issued_date' => '', 'expired_date' => ''];

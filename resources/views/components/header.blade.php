@@ -48,30 +48,12 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                @if ($company && $company->logo)
-                    {{-- Company Logo (if exists) --}}
-                    <div
-                        class="w-12 h-12 rounded-lg overflow-hidden group-hover:scale-110 transition-all duration-300 shadow-md">
-                        <img src="{{ \Storage::url($company->logo) }}"
-                            alt="{{ $company->company_name ?? 'Company' }} Logo"
-                            class="w-full h-full object-contain bg-white">
-                    </div>
-                @else
-                    {{-- Fallback: Initials --}}
-                    <div
-                        class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-md">
-                        <span class="text-white font-bold text-xl">
-                            {{ $company
-                                ? (strlen($company->company_name) >= 2
-                                    ? strtoupper(
-                                        substr($company->company_name, 0, 1) .
-                                            substr(explode(' ', $company->company_name)[1] ?? $company->company_name, 0, 1),
-                                    )
-                                    : strtoupper(substr($company->company_name, 0, 2)))
-                                : 'AB' }}
-                        </span>
-                    </div>
-                @endif
+                <div
+                    class="w-12 h-12 rounded-lg overflow-hidden group-hover:scale-110 transition-all duration-300 shadow-md">
+                    <img src="/icon.png"
+                        alt="{{ $company->company_name ?? 'AL BAROKAH' }} Logo"
+                        class="w-full h-full object-contain bg-white">
+                </div>
 
                 <span class="text-2xl font-heading tracking-wider text-secondary-900">
                     {{ $company->company_name ?? 'AL BAROKAH' }}

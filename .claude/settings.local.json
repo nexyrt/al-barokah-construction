@@ -2,7 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(grep:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(del \"c:\\\\Users\\\\Lenovo\\\\Documents\\\\Application\\\\al-barokah\\\\public\\\\favicon.ico\")",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(find:*)",
+      "Bash(php artisan view:clear:*)",
+      "Bash(npm run build:*)",
+      "Bash(php artisan storage:link:*)",
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(php artisan db:seed:*)",
+      "Bash(php artisan tinker:*)"
     ]
   }
 }

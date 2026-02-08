@@ -112,9 +112,16 @@
                                                 <x-icon name="shield-check" class="w-6 h-6 text-primary-600" />
                                             </div>
                                             <div class="flex-1">
-                                                <h5 class="font-semibold text-zinc-900 dark:text-zinc-50">
-                                                    {{ $cert['name'] ?? 'No Name' }}
-                                                </h5>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <h5 class="font-semibold text-zinc-900 dark:text-zinc-50">
+                                                        {{ $cert['name'] ?? 'No Name' }}
+                                                    </h5>
+                                                    @if (!empty($cert['type']))
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
+                                                            {{ $cert['type'] }}
+                                                        </span>
+                                                    @endif
+                                                </div>
                                                 <p class="text-sm text-zinc-600 dark:text-zinc-400">
                                                     Certificate No: <span
                                                         class="font-medium">{{ $cert['number'] ?? '-' }}</span>
@@ -176,6 +183,10 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <x-input wire:model="newCertification.name" label="Certification Name *"
                             placeholder="e.g., ISO 9001:2015" />
+
+                        <x-input wire:model="newCertification.type" label="Type *"
+                            placeholder="e.g., ISO, K3, SBU, or custom category"
+                            hint="Common: ISO, K3, SBU. Or enter your own category" />
 
                         <x-input wire:model="newCertification.number" label="Certificate Number *"
                             placeholder="e.g., CERT-2024-001" />

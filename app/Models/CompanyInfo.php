@@ -24,7 +24,6 @@ class CompanyInfo extends Model
         'email',
         'whatsapp',
         'website',
-        'logo',
         'established_year',
     ];
 

@@ -324,12 +324,20 @@
                     </p>
                 </div>
 
-                @foreach (['ISO', 'K3', 'SBU'] as $type)
+                @foreach (['ISO', 'K3', 'SBU', 'Other'] as $type)
                     @if (!empty($certificationsByType[$type]))
                         <div class="space-y-4">
                             <h3 class="text-xl font-heading font-bold text-secondary-900 flex items-center gap-2">
                                 <span class="w-2 h-8 bg-primary-600 rounded"></span>
-                                {{ $type === 'ISO' ? 'Sertifikasi ISO' : ($type === 'K3' ? 'Sertifikasi Keselamatan & Kesehatan Kerja' : 'Sertifikat Badan Usaha') }}
+                                @if ($type === 'ISO')
+                                    Sertifikasi ISO
+                                @elseif ($type === 'K3')
+                                    Sertifikasi Keselamatan & Kesehatan Kerja
+                                @elseif ($type === 'SBU')
+                                    Sertifikat Badan Usaha
+                                @else
+                                    Sertifikasi Lainnya
+                                @endif
                             </h3>
                             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach ($certificationsByType[$type] as $index => $cert)

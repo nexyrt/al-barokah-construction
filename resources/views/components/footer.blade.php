@@ -20,8 +20,8 @@
             {{-- Company Info --}}
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">AB</span>
+                    <div class="w-10 h-10 rounded-lg overflow-hidden">
+                        <img src="/icon.png" alt="{{ $company->company_name ?? 'AL BAROKAH' }} Logo" class="w-full h-full object-contain">
                     </div>
                     <h3 class="text-2xl font-heading tracking-wider text-white">
                         {{ $company->company_name ?? 'AL BAROKAH' }}

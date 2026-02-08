@@ -69,34 +69,6 @@
                     :min="1900" :max="date('Y')" />
             </div>
 
-            {{-- Logo Upload --}}
-            <div class="space-y-4">
-                <div class="border-b border-zinc-200 dark:border-zinc-700 pb-4">
-                    <h4 class="text-base font-semibold text-zinc-900 dark:text-zinc-50">Company Logo</h4>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Upload your company logo (max 2MB, will be
-                        resized to 500x500)</p>
-                </div>
-
-                {{-- Existing Logo Preview --}}
-                @if ($existing_logo)
-                    <div class="flex items-start gap-4 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-                        <img src="{{ \Storage::url($existing_logo) }}" alt="Current Logo"
-                            class="w-24 h-24 object-contain rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-zinc-900 dark:text-zinc-50">Current Logo</p>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Click upload below to replace</p>
-                            <x-button wire:click="removeLogo" color="red" size="sm" icon="trash" outline
-                                class="mt-2" wire:confirm="Are you sure you want to remove the logo?">
-                                Remove Logo
-                            </x-button>
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Upload New Logo --}}
-                <x-upload wire:model="logo" label="Upload New Logo" accept="image/*"
-                    hint="PNG, JPG, or JPEG (max 2MB)" />
-            </div>
         </div>
 
         {{-- Tab 2: About & Vision --}}

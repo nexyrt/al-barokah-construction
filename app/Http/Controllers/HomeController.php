@@ -76,9 +76,7 @@ class HomeController extends Controller
         JsonLd::setDescription($company?->about_us ?? 'Perusahaan konstruksi terpercaya');
         JsonLd::addValue('url', url('/'));
 
-        if ($company?->logo) {
-            JsonLd::addValue('logo', asset('storage/' . $company->logo));
-        }
+        JsonLd::addValue('logo', asset('icon.png'));
 
         if ($company?->address) {
             JsonLd::addValue('address', [
