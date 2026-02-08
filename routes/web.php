@@ -92,8 +92,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Clients
     Route::get('/clients', \App\Livewire\Admin\Clients\Index::class)->name('clients.index');
 
-    // Messages (Coming Soon)
-    // Route::get('/messages', \App\Livewire\Admin\Messages\Index::class)->name('messages.index');
+    // Messages
+    Route::get('/messages', \App\Livewire\Admin\Messages\Index::class)->name('messages.index');
 
     // Users (Coming Soon)
     // Route::get('/users', \App\Livewire\Admin\Users\Index::class)->name('users.index');
